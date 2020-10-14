@@ -20,7 +20,7 @@ public class CollisionDetector : MonoBehaviour
                 focus.text = "<color=blue>+</color>";
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    text.text = "<size=25><b>" + modelInfo.modelName + "</b></size>" + "\n" + modelInfo.modelInfo;
+                    text.text = "<size=25><b>" + modelInfo.modelName + "</b></size>" + "\n" + "<size=15><b>" + modelInfo.modelSummary + "</b></size>" + "\n" + modelInfo.modelInfo;
                 }
                 return;
             }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class ModelInfo : MonoBehaviour
 {
     public string modelName;
+    public string modelSummary;
     public string modelInfo;
     // Start is called before the first frame update
     void Start()

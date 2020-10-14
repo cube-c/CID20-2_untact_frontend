@@ -10,13 +10,15 @@ using Siccity.GLTFUtility;
 public class Exhibit
 {
     public int id;
-    public string name;
     public string mesh;
+
+    // ModelInfo
+    public string name;
+    public string summary;
     public string info;
-    public float posx;
-    public float posy;
-    public float posz;
-    public float roty;
+
+    // Position
+    public string position_id;
 }
 
 [Serializable]
@@ -24,6 +26,16 @@ public class ExhibitList
 {
     public Exhibit[] exhibits;
 }
+
+[Serializable]
+public class Position
+{
+    public float posx;
+    public float posy;
+    public float posz;
+    public float roty;
+}
+
 
 public class ModelLoader : MonoBehaviour
 {
@@ -37,7 +49,7 @@ public class ModelLoader : MonoBehaviour
         {
             name = "Model"
         };
-        StartCoroutine(GetRequest("http://localhost:8000/api/exhibit/"));
+        StartCoroutine(GetExhibitRequest());
     }
 
     string GetFilePath(string url)
@@ -71,9 +83,9 @@ public class ModelLoader : MonoBehaviour
         }
     }
 
-    IEnumerator GetRequest(string url)
+    IEnumerator GetPositionRequest(GameObject model, string position_id)
     {
-        using (UnityWebRequest req = UnityWebRequest.Get(url))
+        using (UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/position/" + position_id))
         {
             yield return req.SendWebRequest();
 
@@ -83,8 +95,30 @@ public class ModelLoader : MonoBehaviour
             }
             else
             {
-                ExhibitList list = JsonUtility.FromJson<ExhibitList>("{\"exhibits\":" + req.downloadHandler.text + "}");
-                foreach(Exhibit exhibit in list.exhibits)
+                string text = req.downloadHandler.text;
+                Position positionData = JsonUtility.FromJson<Position>(text.Substring(1, text.Length - 2));
+
+                model.transform.SetParent(wrapper.transform);
+                model.transform.position = new Vector3(positionData.posx, positionData.posy, positionData.posz);
+                model.transform.Rotate(0.0f, positionData.roty, 0.0f);
+            }
+        }
+    }
+
+    IEnumerator GetExhibitRequest()
+    {
+        using (UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/exhibit/"))
+        {
+            yield return req.SendWebRequest();
+
+            if (req.isNetworkError || req.isHttpError)
+            {
+                Debug.Log(req.error);
+            }
+            else
+            {
+                ExhibitList exhibitList = JsonUtility.FromJson<ExhibitList>("{\"exhibits\":" + req.downloadHandler.text + "}");
+                foreach (Exhibit exhibit in exhibitList.exhibits)
                 {
                     string path = GetFilePath(exhibit.mesh);
                     if (File.Exists(path))
@@ -104,12 +138,11 @@ public class ModelLoader : MonoBehaviour
     void LoadModel(Exhibit exhibit)
     {
         GameObject model = Importer.LoadFromFile(GetFilePath(exhibit.mesh));
-        model.transform.SetParent(wrapper.transform);
-        model.transform.position = new Vector3(exhibit.posx, exhibit.posy, exhibit.posz);
-        model.transform.Rotate(0.0f, exhibit.roty, 0.0f);
+        StartCoroutine(GetPositionRequest(model, exhibit.position_id));
         ModelInfo info = model.AddComponent<ModelInfo>();
         MeshCollider collider = model.AddComponent<MeshCollider>();
         info.modelName = exhibit.name;
+        info.modelSummary = exhibit.summary;
         info.modelInfo = exhibit.info;
     }
 }
