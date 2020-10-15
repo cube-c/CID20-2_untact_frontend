@@ -2,11 +2,14 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ModelInfo : MonoBehaviour
+public class ExhibitData : MonoBehaviour
 {
-    public string modelName;
-    public string modelSummary;
-    public string modelInfo;
+    //public string name; // inherited member 'Object.name'
+    public string summary;
+    public string info;
+    public string position_id;
+    public Position position;
+
     // Start is called before the first frame update
     void Start()
     {

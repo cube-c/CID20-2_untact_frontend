@@ -12,12 +12,10 @@ public class Exhibit
     public int id;
     public string mesh;
 
-    // ModelInfo
     public string name;
     public string summary;
     public string info;
 
-    // Position
     public string position_id;
 }
 
@@ -47,7 +45,7 @@ public class ModelLoader : MonoBehaviour
         filePath = $"{Application.persistentDataPath}/Assets/Models/";
         wrapper = new GameObject
         {
-            name = "Model"
+            name = "Exhibit"
         };
         StartCoroutine(GetExhibitRequest());
     }
@@ -83,7 +81,7 @@ public class ModelLoader : MonoBehaviour
         }
     }
 
-    IEnumerator GetPositionRequest(GameObject model, string position_id)
+    IEnumerator GetPositionRequest(GameObject exhibitObject, string position_id)
     {
         using (UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/position/" + position_id))
         {
@@ -96,11 +94,12 @@ public class ModelLoader : MonoBehaviour
             else
             {
                 string text = req.downloadHandler.text;
-                Position positionData = JsonUtility.FromJson<Position>(text.Substring(1, text.Length - 2));
+                ExhibitData data = exhibitObject.GetComponent<ExhibitData>();
+                data.position = JsonUtility.FromJson<Position>(text.Substring(1, text.Length - 2));
 
-                model.transform.SetParent(wrapper.transform);
-                model.transform.position = new Vector3(positionData.posx, positionData.posy, positionData.posz);
-                model.transform.Rotate(0.0f, positionData.roty, 0.0f);
+                exhibitObject.transform.SetParent(wrapper.transform);
+                exhibitObject.transform.position = new Vector3(data.position.posx, data.position.posy, data.position.posz);
+                exhibitObject.transform.Rotate(0.0f, data.position.roty, 0.0f);
             }
         }
     }
@@ -137,12 +136,13 @@ public class ModelLoader : MonoBehaviour
 
     void LoadModel(Exhibit exhibit)
     {
-        GameObject model = Importer.LoadFromFile(GetFilePath(exhibit.mesh));
-        StartCoroutine(GetPositionRequest(model, exhibit.position_id));
-        ModelInfo info = model.AddComponent<ModelInfo>();
-        MeshCollider collider = model.AddComponent<MeshCollider>();
-        info.modelName = exhibit.name;
-        info.modelSummary = exhibit.summary;
-        info.modelInfo = exhibit.info;
+        GameObject exhibitObject = Importer.LoadFromFile(GetFilePath(exhibit.mesh));
+        ExhibitData data = exhibitObject.AddComponent<ExhibitData>();
+        StartCoroutine(GetPositionRequest(exhibitObject, exhibit.position_id));
+        MeshCollider collider = exhibitObject.AddComponent<MeshCollider>();
+        data.position_id = exhibit.position_id;
+        data.name = exhibit.name;
+        data.summary = exhibit.summary;
+        data.info = exhibit.info;
     }
 }
