@@ -22,9 +22,10 @@ public class CollisionDetector : MonoBehaviour
                 {
                     text.text = "<size=25><b>" + data.name + "</b></size>" + "    " +
                                 data.position_id + " " +
-                                data.position.posx + " " +
-                                data.position.posy + " " +
-                                data.position.posz + "\n" +
+                                hit.transform.position.x + " " +
+                                hit.transform.position.y + " " +
+                                hit.transform.position.z + " " +
+                                hit.transform.rotation.eulerAngles.y + "\n" +
                                 "<size=15><b>" + data.summary + "</b></size>" + "\n" +
                                 data.info;
                 }

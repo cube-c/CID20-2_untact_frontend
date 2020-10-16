@@ -17,21 +17,16 @@ public class Exhibit
     public string info;
 
     public string position_id;
+    public float posx;
+    public float posy;
+    public float posz;
+    public float roty;
 }
 
 [Serializable]
 public class ExhibitList
 {
     public Exhibit[] exhibits;
-}
-
-[Serializable]
-public class Position
-{
-    public float posx;
-    public float posy;
-    public float posz;
-    public float roty;
 }
 
 
@@ -81,29 +76,6 @@ public class ModelLoader : MonoBehaviour
         }
     }
 
-    IEnumerator GetPositionRequest(GameObject exhibitObject, string position_id)
-    {
-        using (UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/position/" + position_id))
-        {
-            yield return req.SendWebRequest();
-
-            if (req.isNetworkError || req.isHttpError)
-            {
-                Debug.Log(req.error);
-            }
-            else
-            {
-                string text = req.downloadHandler.text;
-                ExhibitData data = exhibitObject.GetComponent<ExhibitData>();
-                data.position = JsonUtility.FromJson<Position>(text.Substring(1, text.Length - 2));
-
-                exhibitObject.transform.SetParent(wrapper.transform);
-                exhibitObject.transform.position = new Vector3(data.position.posx, data.position.posy, data.position.posz);
-                exhibitObject.transform.Rotate(0.0f, data.position.roty, 0.0f);
-            }
-        }
-    }
-
     IEnumerator GetExhibitRequest()
     {
         using (UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/exhibit/"))
@@ -138,8 +110,12 @@ public class ModelLoader : MonoBehaviour
     {
         GameObject exhibitObject = Importer.LoadFromFile(GetFilePath(exhibit.mesh));
         ExhibitData data = exhibitObject.AddComponent<ExhibitData>();
-        StartCoroutine(GetPositionRequest(exhibitObject, exhibit.position_id));
         MeshCollider collider = exhibitObject.AddComponent<MeshCollider>();
+
+        exhibitObject.transform.SetParent(wrapper.transform);
+        exhibitObject.transform.position = new Vector3(exhibit.posx, exhibit.posy, exhibit.posz);
+        exhibitObject.transform.Rotate(0.0f, exhibit.roty, 0.0f);
+
         data.position_id = exhibit.position_id;
         data.name = exhibit.name;
         data.summary = exhibit.summary;
