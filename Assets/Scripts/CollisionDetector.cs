@@ -17,7 +17,7 @@ public class CollisionDetector : MonoBehaviour
             ExhibitData data = hit.transform.GetComponent<ExhibitData>();
             if (data != null)
             {
-                focus.text = "<color=blue>+</color>";
+                focus.text = "<color=red>+</color>";
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     text.text = "<size=25><b>" + data.name + "</b></size>" + "    " +
