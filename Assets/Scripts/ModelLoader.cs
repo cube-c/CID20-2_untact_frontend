@@ -10,9 +10,13 @@ using Siccity.GLTFUtility;
 public class Exhibit
 {
     public int id;
-    public string name;
     public string mesh;
+
+    public string name;
+    public string summary;
     public string info;
+
+    public string position_id;
     public float posx;
     public float posy;
     public float posz;
@@ -25,6 +29,7 @@ public class ExhibitList
     public Exhibit[] exhibits;
 }
 
+
 public class ModelLoader : MonoBehaviour
 {
     GameObject wrapper;
@@ -35,9 +40,9 @@ public class ModelLoader : MonoBehaviour
         filePath = $"{Application.persistentDataPath}/Assets/Models/";
         wrapper = new GameObject
         {
-            name = "Model"
+            name = "Exhibit"
         };
-        StartCoroutine(GetRequest("http://localhost:8000/api/exhibit/"));
+        StartCoroutine(GetExhibitRequest());
     }
 
     string GetFilePath(string url)
@@ -71,9 +76,9 @@ public class ModelLoader : MonoBehaviour
         }
     }
 
-    IEnumerator GetRequest(string url)
+    IEnumerator GetExhibitRequest()
     {
-        using (UnityWebRequest req = UnityWebRequest.Get(url))
+        using (UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/exhibit/"))
         {
             yield return req.SendWebRequest();
 
@@ -83,8 +88,8 @@ public class ModelLoader : MonoBehaviour
             }
             else
             {
-                ExhibitList list = JsonUtility.FromJson<ExhibitList>("{\"exhibits\":" + req.downloadHandler.text + "}");
-                foreach(Exhibit exhibit in list.exhibits)
+                ExhibitList exhibitList = JsonUtility.FromJson<ExhibitList>("{\"exhibits\":" + req.downloadHandler.text + "}");
+                foreach (Exhibit exhibit in exhibitList.exhibits)
                 {
                     string path = GetFilePath(exhibit.mesh);
                     if (File.Exists(path))
@@ -103,13 +108,17 @@ public class ModelLoader : MonoBehaviour
 
     void LoadModel(Exhibit exhibit)
     {
-        GameObject model = Importer.LoadFromFile(GetFilePath(exhibit.mesh));
-        model.transform.SetParent(wrapper.transform);
-        model.transform.position = new Vector3(exhibit.posx, exhibit.posy, exhibit.posz);
-        model.transform.Rotate(0.0f, exhibit.roty, 0.0f);
-        ModelInfo info = model.AddComponent<ModelInfo>();
-        MeshCollider collider = model.AddComponent<MeshCollider>();
-        info.modelName = exhibit.name;
-        info.modelInfo = exhibit.info;
+        GameObject exhibitObject = Importer.LoadFromFile(GetFilePath(exhibit.mesh));
+        ExhibitData data = exhibitObject.AddComponent<ExhibitData>();
+        MeshCollider collider = exhibitObject.AddComponent<MeshCollider>();
+
+        exhibitObject.transform.SetParent(wrapper.transform);
+        exhibitObject.transform.position = new Vector3(exhibit.posx, exhibit.posy, exhibit.posz);
+        exhibitObject.transform.Rotate(0.0f, exhibit.roty, 0.0f);
+
+        data.position_id = exhibit.position_id;
+        data.name = exhibit.name;
+        data.summary = exhibit.summary;
+        data.info = exhibit.info;
     }
 }
