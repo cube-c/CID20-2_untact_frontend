@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
-using System.Text.RegularExpressions;
-using System.Text;
 using UnityEngine.UI;
 
 public class LoginController : MonoBehaviour
@@ -12,22 +12,23 @@ public class LoginController : MonoBehaviour
     public InputField username;
     public InputField password;
 
-    public void LoginScene()
+    public void Login()
     {
         StartCoroutine(LoginRequest());
     }
+
     IEnumerator LoginRequest()
     {
-        UnityWebRequest loginPage = UnityWebRequest.Get("http://localhost:8000/api/token/");
-        yield return loginPage.SendWebRequest();
-        if (loginPage.isNetworkError || loginPage.isHttpError)
+        UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
+        yield return getToken.SendWebRequest();
+        if (getToken.isNetworkError || getToken.isHttpError)
         {
-            Debug.Log(loginPage.error);
+            Debug.Log(getToken.error);
             yield break;
         }
 
         // get the csrf cookie
-        string SetCookie = loginPage.GetResponseHeader("set-cookie");
+        string SetCookie = getToken.GetResponseHeader("set-cookie");
         Regex rxCookie = new Regex("csrftoken=(?<csrf_token>.{64});");
         MatchCollection cookieMatches = rxCookie.Matches(SetCookie);
         string csrfCookie = cookieMatches[0].Groups["csrf_token"].Value;
