@@ -6,7 +6,6 @@ using UnityEngine.UI;
 public class MenuController : MonoBehaviour
 {
     public GameObject menu;
-    public GameObject menuBackground;
     public bool menuOn = false;
 
     void Update()
@@ -22,7 +21,6 @@ public class MenuController : MonoBehaviour
                 gameObject.GetComponentInChildren<FirstPersonLook>().enabled = false;
                 gameObject.GetComponentInChildren<Zoom>().enabled = false;
                 menu.SetActive(true);
-                menuBackground.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
             }
             else
@@ -33,7 +31,6 @@ public class MenuController : MonoBehaviour
                 gameObject.GetComponentInChildren<FirstPersonLook>().enabled = true;
                 gameObject.GetComponentInChildren<Zoom>().enabled = true;
                 menu.SetActive(false);
-                menuBackground.SetActive(false);
                 Cursor.lockState = CursorLockMode.Locked;
             }
         }
