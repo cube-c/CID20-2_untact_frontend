@@ -35,6 +35,9 @@ public class ModelLoader : MonoBehaviour
     GameObject wrapper;
     string filePath;
 
+    int maxExhibitCounter;
+    int currLoadedExhibitCounter;
+
     private void Start()
     {
         filePath = $"{Application.persistentDataPath}/Assets/Models/";
@@ -72,6 +75,7 @@ public class ModelLoader : MonoBehaviour
                 Debug.Log($"Downloaded file : {url}");
                 // Save the model
                 LoadModel(exhibit);
+                currLoadedExhibitCounter = currLoadedExhibitCounter + 1;
             }
         }
     }
@@ -89,6 +93,10 @@ public class ModelLoader : MonoBehaviour
             else
             {
                 ExhibitList exhibitList = JsonUtility.FromJson<ExhibitList>("{\"exhibits\":" + req.downloadHandler.text + "}");
+
+                maxExhibitCounter = exhibitList.exhibits.Length;
+                currLoadedExhibitCounter = 0;
+
                 foreach (Exhibit exhibit in exhibitList.exhibits)
                 {
                     string path = GetFilePath(exhibit.mesh);
