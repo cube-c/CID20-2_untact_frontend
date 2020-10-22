@@ -15,11 +15,24 @@ public class ExhibitRow : MonoBehaviour
 
     public Text positionIdText;
     public Text exhibitNameText;
+    public Image selectedRowImage;
 
     public void FillText()
     {
         positionIdText.text = positionId;
         exhibitNameText.text = exhibitName;
+    }
+
+    public void Mark(bool isSelected)
+    {
+        if (isSelected)
+        {
+            selectedRowImage.color = new Color(0, 0, 0, 100f / 255);
+        }
+        else
+        {
+            selectedRowImage.color = new Color(0, 0, 0, 0);
+        }
     }
 
     // Start is called before the first frame update

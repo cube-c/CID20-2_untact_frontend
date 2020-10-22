@@ -15,9 +15,14 @@ enum SortOrder
 public class ExhibitListController : MonoBehaviour
 {
     public GameObject content;
+    public Scrollbar scrollbar;
+    public Image handleImage;
+
     public GameObject exhibitRowPrefab;
     public GameObject summaryRowPrefab;
+
     public const int rowHeight = 25;
+    public const int numberOfRowsInWindow = 11;
 
     public Text textPosition;
     public Text textName;
@@ -65,13 +70,19 @@ public class ExhibitListController : MonoBehaviour
     {
         if (exhibitRow != exhibitRowSummary)
         {
+            if (exhibitRowSummary != null)
+            {
+                exhibitRowSummary.GetComponent<ExhibitRow>().Mark(false);
+            }
             exhibitRowSummary = exhibitRow;
+            exhibitRowSummary.GetComponent<ExhibitRow>().Mark(true);
             summaryRow.GetComponentInChildren<Text>().text = exhibitRow.GetComponent<ExhibitRow>().summary;
             summaryRow.SetActive(true);
         }
         else
         {
             summaryRow.SetActive(!summaryRow.activeSelf);
+            exhibitRowSummary.GetComponent<ExhibitRow>().Mark(summaryRow.activeSelf);
         }
 
         Show();
@@ -80,10 +91,19 @@ public class ExhibitListController : MonoBehaviour
     public void Show()
     {
         RectTransform rt = content.GetComponent<RectTransform>();
-        rt.sizeDelta = new Vector2(rt.sizeDelta.x, exhibitRowsShow.Count * rowHeight);
+        rt.sizeDelta = new Vector2(rt.sizeDelta.x, (exhibitRowsShow.Count + 1) * rowHeight);
+
+        scrollbar.numberOfSteps = exhibitRowsShow.Count + 2 - numberOfRowsInWindow;
+        if (scrollbar.numberOfSteps <= 1)
+        {
+            handleImage.color = new Color(1, 1, 1, 0);
+        }
+        else
+        {
+            handleImage.color = new Color(1, 1, 1, 200f / 255);
+        }
 
         int posy = 0;
-
         if (!summaryRow.activeSelf)
         {
             foreach (GameObject exhibitRow in exhibitRowsShow)

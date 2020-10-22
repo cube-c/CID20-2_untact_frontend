@@ -2924,7 +2924,7 @@ MonoBehaviour:
   m_Direction: 2
   m_Value: 0
   m_Size: 1
-  m_NumberOfSteps: 0
+  m_NumberOfSteps: 11
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2941,7 +2941,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 0.19607843}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -3944,6 +3944,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: {fileID: 771231720}
+  scrollbar: {fileID: 1415735255}
+  handleImage: {fileID: 804652191}
   exhibitRowPrefab: {fileID: 1835294541542109778, guid: 4e348263a6c196048b34fde6e4ade07c, type: 3}
   summaryRowPrefab: {fileID: 2617490440850241849, guid: 715afd5d3c1abb348add6cc43eb99904, type: 3}
   textPosition: {fileID: 15991267}
