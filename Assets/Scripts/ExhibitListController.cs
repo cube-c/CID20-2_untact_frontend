@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,15 +22,19 @@ public class ExhibitListController : MonoBehaviour
     public Text textPosition;
     public Text textName;
 
-    public List<GameObject> exhibitsAll;
-    public List<GameObject> exhibitsShow;
-    public int selectedIndex;
+    public List<GameObject> exhibitRowsAll;
+    public List<GameObject> exhibitRowsShow;
+    public GameObject exhibitRowSummary;
+    public GameObject summaryRow;
 
     SortOrder sortOrder = SortOrder.POSITION_ID_ASCENDING;
 
     void Awake()
     {
-        exhibitsAll = new List<GameObject>();
+        exhibitRowsAll = new List<GameObject>();
+        summaryRow = Instantiate(summaryRowPrefab);
+        summaryRow.SetActive(false);
+        summaryRow.transform.parent = content.transform;
     }
 
     public void GetExhibit(GameObject exhibit)
@@ -48,19 +53,60 @@ public class ExhibitListController : MonoBehaviour
         exhibitRowComponent.roty = exhibit.transform.rotation.eulerAngles.y;
         exhibitRowComponent.FillText();
 
-        exhibitsAll.Add(exhibitRow);
+        exhibitRowsAll.Add(exhibitRow);
     }
 
     public void SetShowAll()
     {
-        exhibitsShow = new List<GameObject>(exhibitsAll);
+        exhibitRowsShow = new List<GameObject>(exhibitRowsAll);
+    }
+
+    public void SwitchSummary(GameObject exhibitRow)
+    {
+        if (exhibitRow != exhibitRowSummary)
+        {
+            exhibitRowSummary = exhibitRow;
+            summaryRow.GetComponentInChildren<Text>().text = exhibitRow.GetComponent<ExhibitRow>().summary;
+            summaryRow.SetActive(true);
+        }
+        else
+        {
+            summaryRow.SetActive(!summaryRow.activeSelf);
+        }
+
+        Show();
     }
 
     public void Show()
     {
-        foreach(GameObject exhibit in exhibitsShow) {
-            exhibit.transform.parent = content.transform;
-            exhibit.GetComponent<RectTransform>().localPosition = new Vector3(0, exhibitsShow.IndexOf(exhibit) * (-rowHeight), 0);
+        RectTransform rt = content.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(rt.sizeDelta.x, exhibitRowsShow.Count * rowHeight);
+
+        int posy = 0;
+
+        if (!summaryRow.activeSelf)
+        {
+            foreach (GameObject exhibitRow in exhibitRowsShow)
+            {
+                exhibitRow.transform.parent = content.transform;
+                exhibitRow.GetComponent<RectTransform>().localPosition = new Vector3(0, posy, 0);
+                posy -= rowHeight;
+            }
+        }
+        else
+        {
+            foreach (GameObject exhibitRow in exhibitRowsShow)
+            {
+                exhibitRow.transform.parent = content.transform;
+                exhibitRow.GetComponent<RectTransform>().localPosition = new Vector3(0, posy, 0);
+                posy -= rowHeight;
+
+                if (exhibitRow == exhibitRowSummary)
+                {
+                    summaryRow.GetComponent<RectTransform>().localPosition = new Vector3(0, posy, 0);
+                    posy -= rowHeight;
+                }
+            }
         }
     }
 }
