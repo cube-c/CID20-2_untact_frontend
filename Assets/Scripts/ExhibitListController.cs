@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 enum SortOrder
 {
@@ -15,6 +16,10 @@ public class ExhibitListController : MonoBehaviour
     public GameObject content;
     public GameObject exhibitRowPrefab;
     public GameObject summaryRowPrefab;
+    public const int rowHeight = 25;
+
+    public Text textPosition;
+    public Text textName;
 
     public List<GameObject> exhibitsAll;
     public List<GameObject> exhibitsShow;
@@ -44,5 +49,18 @@ public class ExhibitListController : MonoBehaviour
         exhibitRowComponent.FillText();
 
         exhibitsAll.Add(exhibitRow);
+    }
+
+    public void SetShowAll()
+    {
+        exhibitsShow = new List<GameObject>(exhibitsAll);
+    }
+
+    public void Show()
+    {
+        foreach(GameObject exhibit in exhibitsShow) {
+            exhibit.transform.parent = content.transform;
+            exhibit.GetComponent<RectTransform>().localPosition = new Vector3(0, exhibitsShow.IndexOf(exhibit) * (-rowHeight), 0);
+        }
     }
 }

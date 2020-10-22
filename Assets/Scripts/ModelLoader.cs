@@ -105,6 +105,8 @@ public class ModelLoader : MonoBehaviour
                         StartCoroutine(GetModelRequest(exhibit));
                     }
                 }
+                exhibitListController.SetShowAll();
+                exhibitListController.Show();
             }
         }
     }
