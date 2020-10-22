@@ -32,6 +32,8 @@ public class ExhibitList
 
 public class ModelLoader : MonoBehaviour
 {
+    public ExhibitListController exhibitListController;
+
     GameObject wrapper;
     string filePath;
 
@@ -42,6 +44,7 @@ public class ModelLoader : MonoBehaviour
         {
             name = "Exhibit"
         };
+
         StartCoroutine(GetExhibitRequest());
     }
 
@@ -110,7 +113,7 @@ public class ModelLoader : MonoBehaviour
     {
         GameObject exhibitObject = Importer.LoadFromFile(GetFilePath(exhibit.mesh));
         ExhibitData data = exhibitObject.AddComponent<ExhibitData>();
-        MeshCollider collider = exhibitObject.AddComponent<MeshCollider>();
+        exhibitObject.AddComponent<MeshCollider>();
 
         exhibitObject.transform.SetParent(wrapper.transform);
         exhibitObject.transform.position = new Vector3(exhibit.posx, exhibit.posy, exhibit.posz);
@@ -120,5 +123,7 @@ public class ModelLoader : MonoBehaviour
         data.name = exhibit.name;
         data.summary = exhibit.summary;
         data.info = exhibit.info;
+
+        exhibitListController.GetExhibit(exhibitObject);
     }
 }
