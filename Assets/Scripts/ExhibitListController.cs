@@ -2,27 +2,47 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+enum SortOrder
+{
+    POSITION_ID_ASCENDING,
+    POSITION_ID_DESCENDING,
+    EXHIBIT_NAME_ASCENDING,
+    EXHIBIT_NAME_DESCENDING
+};
+
 public class ExhibitListController : MonoBehaviour
 {
     public GameObject content;
-    public List<GameObject> exhibitList;
+    public GameObject exhibitRowPrefab;
+    public GameObject summaryRowPrefab;
+
+    public List<GameObject> exhibitsAll;
+    public List<GameObject> exhibitsShow;
     public int selectedIndex;
+
+    SortOrder sortOrder = SortOrder.POSITION_ID_ASCENDING;
 
     void Awake()
     {
-        exhibitList = new List<GameObject>();
-    }
-
-    void resizeContent()
-    {
-        RectTransform rt = content.GetComponent<RectTransform>();
-        int count = exhibitList.Count;
-        rt.sizeDelta = new Vector2(rt.sizeDelta.x, (count + 1) * 25);
+        exhibitsAll = new List<GameObject>();
     }
 
     public void GetExhibit(GameObject exhibit)
     {
-        exhibitList.Add(exhibit);
-        resizeContent();
+        ExhibitData exhibitData = exhibit.GetComponent<ExhibitData>();
+
+        GameObject exhibitRow = Instantiate(exhibitRowPrefab);
+        ExhibitRow exhibitRowComponent = exhibitRow.GetComponent<ExhibitRow>();
+
+        exhibitRowComponent.positionId = exhibitData.positionId;
+        exhibitRowComponent.exhibitName = exhibit.name;
+        exhibitRowComponent.summary = exhibitData.summary;
+        exhibitRowComponent.posx = exhibit.transform.position.x;
+        exhibitRowComponent.posy = exhibit.transform.position.y;
+        exhibitRowComponent.posz = exhibit.transform.position.z;
+        exhibitRowComponent.roty = exhibit.transform.rotation.eulerAngles.y;
+        exhibitRowComponent.FillText();
+
+        exhibitsAll.Add(exhibitRow);
     }
 }

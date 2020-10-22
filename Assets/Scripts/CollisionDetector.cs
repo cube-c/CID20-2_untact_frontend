@@ -21,7 +21,7 @@ public class CollisionDetector : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     text.text = "<size=25><b>" + data.name + "</b></size>" + "    " +
-                                data.position_id + " " +
+                                data.positionId + " " +
                                 hit.transform.position.x + " " +
                                 hit.transform.position.y + " " +
                                 hit.transform.position.z + " " +

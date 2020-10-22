@@ -480,13 +480,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bbc2b96eeb57ff4f88507450791e694, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  position_id: 
-  exhibit_name: 
+  positionId: 
+  exhibitName: 
   summary: 
   posx: 0
   posy: 0
   posz: 0
   roty: 0
+  positionIdText: {fileID: 1835294539841427102}
+  exhibitNameText: {fileID: 1835294540258580690}
 --- !u!1 &1835294541811493926
 GameObject:
   m_ObjectHideFlags: 0

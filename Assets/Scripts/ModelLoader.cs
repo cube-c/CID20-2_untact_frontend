@@ -119,7 +119,7 @@ public class ModelLoader : MonoBehaviour
         exhibitObject.transform.position = new Vector3(exhibit.posx, exhibit.posy, exhibit.posz);
         exhibitObject.transform.Rotate(0.0f, exhibit.roty, 0.0f);
 
-        data.position_id = exhibit.position_id;
+        data.positionId = exhibit.position_id;
         data.name = exhibit.name;
         data.summary = exhibit.summary;
         data.info = exhibit.info;

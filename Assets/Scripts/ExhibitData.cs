@@ -6,7 +6,7 @@ public class ExhibitData : MonoBehaviour
 {
     public string summary;
     public string info;
-    public string position_id;
+    public string positionId;
 
     // Start is called before the first frame update
     void Start()
