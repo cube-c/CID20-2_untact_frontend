@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 enum SortOrder
 {
@@ -19,9 +20,8 @@ public class ExhibitListController : MonoBehaviour
     public Image handleImage;
 
     public GameObject exhibitRowPrefab;
-    public GameObject summaryRowPrefab;
 
-    public const int rowHeight = 25;
+    public const float rowHeight = 25;
     public const int numberOfRowsInWindow = 11;
 
     public Text textPosition;
@@ -37,9 +37,6 @@ public class ExhibitListController : MonoBehaviour
     void Awake()
     {
         exhibitRowsAll = new List<GameObject>();
-        summaryRow = Instantiate(summaryRowPrefab);
-        summaryRow.SetActive(false);
-        summaryRow.transform.parent = content.transform;
     }
 
     public void GetExhibit(GameObject exhibit)
@@ -76,13 +73,16 @@ public class ExhibitListController : MonoBehaviour
             }
             exhibitRowSummary = exhibitRow;
             exhibitRowSummary.GetComponent<ExhibitRow>().Mark(true);
-            summaryRow.GetComponentInChildren<Text>().text = exhibitRow.GetComponent<ExhibitRow>().summary;
+            summaryRow.GetComponentInChildren<TMP_Text>().text = exhibitRow.GetComponent<ExhibitRow>().summary;
             summaryRow.SetActive(true);
+
+            gameObject.GetComponent<SummaryScroller>().SetTextChanged(true);
         }
         else
         {
             summaryRow.SetActive(!summaryRow.activeSelf);
             exhibitRowSummary.GetComponent<ExhibitRow>().Mark(summaryRow.activeSelf);
+            gameObject.GetComponent<SummaryScroller>().SetTextChanged(summaryRow.activeSelf);
         }
 
         Show();
@@ -103,12 +103,12 @@ public class ExhibitListController : MonoBehaviour
             handleImage.color = new Color(1, 1, 1, 200f / 255);
         }
 
-        int posy = 0;
+        float posy = 0;
         if (!summaryRow.activeSelf)
         {
             foreach (GameObject exhibitRow in exhibitRowsShow)
             {
-                exhibitRow.transform.parent = content.transform;
+                exhibitRow.transform.SetParent(content.transform);
                 exhibitRow.GetComponent<RectTransform>().localPosition = new Vector3(0, posy, 0);
                 posy -= rowHeight;
             }
@@ -117,7 +117,7 @@ public class ExhibitListController : MonoBehaviour
         {
             foreach (GameObject exhibitRow in exhibitRowsShow)
             {
-                exhibitRow.transform.parent = content.transform;
+                exhibitRow.transform.SetParent(content.transform);
                 exhibitRow.GetComponent<RectTransform>().localPosition = new Vector3(0, posy, 0);
                 posy -= rowHeight;
 
