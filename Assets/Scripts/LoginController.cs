@@ -49,6 +49,6 @@ public class LoginController : MonoBehaviour
             yield break;
         }
 
-        SceneManager.LoadScene("MainScene");
+        SceneManager.LoadScene("LoadingScene");
     }
 }
