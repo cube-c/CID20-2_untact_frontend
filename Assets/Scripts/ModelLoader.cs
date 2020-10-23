@@ -4,7 +4,8 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.Networking;
 using Siccity.GLTFUtility;
-
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [Serializable]
 public class Exhibit
@@ -37,14 +38,24 @@ public class ModelLoader : MonoBehaviour
 
     int maxExhibitCounter;
     int currLoadedExhibitCounter;
+    string entireExhibitLoadingMessage;
+    string modelDownloadMessage;
+
+    public Text entireLoadingText;
+    public Text fileDownloadText;
+
+    bool isDownload;
 
     private void Start()
     {
         filePath = $"{Application.persistentDataPath}/Assets/Models/";
+        
         wrapper = new GameObject
         {
             name = "Exhibit"
         };
+        DontDestroyOnLoad(wrapper); // LoadingScene 에서 Load한 오브젝트들이 포함된 wrapper가 MainScene을 부를 때 삭제되지 않도록 함
+
         StartCoroutine(GetExhibitRequest());
     }
 
@@ -62,7 +73,12 @@ public class ModelLoader : MonoBehaviour
         using (UnityWebRequest req = UnityWebRequest.Get(url))
         {
             req.downloadHandler = new DownloadHandlerFile(GetFilePath(url));
+            isDownload = true;
+
+            StartCoroutine(ModelDownloadProgress(req, exhibit.mesh));
             yield return req.SendWebRequest();
+
+            isDownload = false;
 
             if (req.isNetworkError || req.isHttpError)
             {
@@ -75,7 +91,6 @@ public class ModelLoader : MonoBehaviour
                 Debug.Log($"Downloaded file : {url}");
                 // Save the model
                 LoadModel(exhibit);
-                currLoadedExhibitCounter = currLoadedExhibitCounter + 1;
             }
         }
     }
@@ -110,6 +125,7 @@ public class ModelLoader : MonoBehaviour
                         StartCoroutine(GetModelRequest(exhibit));
                     }
                 }
+                SceneManager.LoadScene("MainScene");
             }
         }
     }
@@ -128,5 +144,21 @@ public class ModelLoader : MonoBehaviour
         data.name = exhibit.name;
         data.summary = exhibit.summary;
         data.info = exhibit.info;
+
+        currLoadedExhibitCounter += 1;
+        entireExhibitLoadingMessage = "Entire Loading Progress : " + currLoadedExhibitCounter + " / " + maxExhibitCounter;
+        Console.WriteLine(entireExhibitLoadingMessage);
+        entireLoadingText.text = entireExhibitLoadingMessage;
+    }
+
+    IEnumerator ModelDownloadProgress(UnityWebRequest req, string mesh)
+    {
+        while (isDownload)
+        {
+            modelDownloadMessage = mesh + "Download Progress : " + req.downloadProgress * 100 + "%";
+            fileDownloadText.text = modelDownloadMessage;
+            yield return new WaitForSeconds(0.1f);
+        }
+        fileDownloadText.text = null;
     }
 }
