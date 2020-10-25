@@ -33,11 +33,15 @@ public class ExhibitList
 public class ModelLoader : MonoBehaviour
 {
     public ExhibitListController exhibitListController;
+    public GameObject LoadingPanel;
 
     GameObject wrapper;
     string filePath;
 
-    private void Start()
+    int allExhibitNum = -1;
+    int currentLoadedExhibitNum = 0;
+
+    void Start()
     {
         filePath = $"{Application.persistentDataPath}/Assets/Models/";
         wrapper = new GameObject
@@ -46,6 +50,15 @@ public class ModelLoader : MonoBehaviour
         };
 
         StartCoroutine(GetExhibitRequest());
+    }
+
+    void Update()
+    {
+        if (currentLoadedExhibitNum == allExhibitNum)
+        {
+            LoadingPanel.SetActive(false);
+            gameObject.SetActive(false);
+        }
     }
 
     string GetFilePath(string url)
@@ -92,6 +105,8 @@ public class ModelLoader : MonoBehaviour
             else
             {
                 ExhibitList exhibitList = JsonUtility.FromJson<ExhibitList>("{\"exhibits\":" + req.downloadHandler.text + "}");
+
+                allExhibitNum = exhibitList.exhibits.Length;
                 foreach (Exhibit exhibit in exhibitList.exhibits)
                 {
                     string path = GetFilePath(exhibit.mesh);
@@ -127,5 +142,6 @@ public class ModelLoader : MonoBehaviour
         data.info = exhibit.info;
 
         exhibitListController.GetExhibit(exhibitObject);
+        currentLoadedExhibitNum += 1;
     }
 }
