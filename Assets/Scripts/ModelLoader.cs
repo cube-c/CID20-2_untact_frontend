@@ -56,6 +56,8 @@ public class ModelLoader : MonoBehaviour
     {
         if (currentLoadedExhibitNum == allExhibitNum)
         {
+            exhibitListController.SetShowAll();
+            exhibitListController.Show();
             LoadingPanel.SetActive(false);
             gameObject.SetActive(false);
         }
@@ -120,8 +122,6 @@ public class ModelLoader : MonoBehaviour
                         StartCoroutine(GetModelRequest(exhibit));
                     }
                 }
-                exhibitListController.SetShowAll();
-                exhibitListController.Show();
             }
         }
     }

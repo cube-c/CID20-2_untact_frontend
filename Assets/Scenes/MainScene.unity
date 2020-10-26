@@ -839,7 +839,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &343857248
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1879,7 +1879,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -4671,7 +4671,7 @@ MonoBehaviour:
   exhibitRowPrefab: {fileID: 1835294541542109778, guid: 4e348263a6c196048b34fde6e4ade07c, type: 3}
   textPosition: {fileID: 15991267}
   textName: {fileID: 1111070260}
-  textSearch: {fileID: 1047850935}
+  searchText: {fileID: 1077257183}
   exhibitRowsAll: []
   exhibitRowsShow: []
   exhibitRowSummary: {fileID: 0}
@@ -5177,7 +5177,7 @@ GameObject:
   - component: {fileID: 114762042230853626}
   - component: {fileID: 1773623225661365}
   m_Layer: 0
-  m_Name: First person controller full
+  m_Name: FirstPersonController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
