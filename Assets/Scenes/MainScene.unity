@@ -1084,7 +1084,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exhibitListController: {fileID: 1962340835}
   LoadingPanel: {fileID: 1968070642}
-  loadingText: {fileID: 208004369}
 --- !u!4 &392421771
 Transform:
   m_ObjectHideFlags: 0
@@ -3408,6 +3407,7 @@ GameObject:
   - component: {fileID: 1532889931}
   - component: {fileID: 1532889933}
   - component: {fileID: 1532889932}
+  - component: {fileID: 1532889934}
   m_Layer: 5
   m_Name: NamePanel
   m_TagString: Untagged
@@ -3473,6 +3473,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1532889930}
   m_CullTransparentMesh: 0
+--- !u!114 &1532889934
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1532889930}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f949e1f1f326bb34ba1d31db6f75304d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exhibitListController: {fileID: 1962340835}
 --- !u!1 &1543203800
 GameObject:
   m_ObjectHideFlags: 0
@@ -3772,6 +3785,7 @@ GameObject:
   - component: {fileID: 1629580814}
   - component: {fileID: 1629580816}
   - component: {fileID: 1629580815}
+  - component: {fileID: 1629580817}
   m_Layer: 5
   m_Name: PositionPanel
   m_TagString: Untagged
@@ -3837,6 +3851,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1629580813}
   m_CullTransparentMesh: 0
+--- !u!114 &1629580817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1629580813}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b6bbf2b082a8c14daddc7386d96a24e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exhibitListController: {fileID: 1962340835}
 --- !u!1 &1747785072
 GameObject:
   m_ObjectHideFlags: 0

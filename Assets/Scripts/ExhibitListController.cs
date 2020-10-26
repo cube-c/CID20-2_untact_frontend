@@ -61,6 +61,66 @@ public class ExhibitListController : MonoBehaviour
     public void SetShowAll()
     {
         exhibitRowsShow = new List<GameObject>(exhibitRowsAll);
+        Sort();
+    }
+
+    public void ClickPosition()
+    {
+        if (sortOrder == SortOrder.POSITION_ID_ASCENDING)
+        {
+            sortOrder = SortOrder.POSITION_ID_DESCENDING;
+            textPosition.text = "위치 <size=8>▲</size>";
+            textName.text = "이름";
+        }
+        else
+        {
+            sortOrder = SortOrder.POSITION_ID_ASCENDING;
+            textPosition.text = "위치 <size=8>▼</size>";
+            textName.text = "이름";
+        }
+
+        Sort();
+        Show();
+    }
+
+    public void ClickName()
+    {
+        if (sortOrder == SortOrder.EXHIBIT_NAME_ASCENDING)
+        {
+            sortOrder = SortOrder.EXHIBIT_NAME_DESCENDING;
+            textPosition.text = "위치";
+            textName.text = "이름 <size=8>▲</size>";
+        }
+        else
+        {
+            sortOrder = SortOrder.EXHIBIT_NAME_ASCENDING;
+            textPosition.text = "위치";
+            textName.text = "이름 <size=8>▼</size>";
+        }
+
+        Sort();
+        Show();
+    }
+
+    public void Sort()
+    {
+        switch (sortOrder)
+        {
+            case SortOrder.POSITION_ID_ASCENDING:
+                exhibitRowsShow = exhibitRowsShow.OrderBy(exhibitRow => exhibitRow.GetComponent<ExhibitRow>().positionId).ToList();
+                break;
+            case SortOrder.POSITION_ID_DESCENDING:
+                exhibitRowsShow = exhibitRowsShow.OrderByDescending(exhibitRow => exhibitRow.GetComponent<ExhibitRow>().positionId).ToList();
+                break;
+            case SortOrder.EXHIBIT_NAME_ASCENDING:
+                exhibitRowsShow = exhibitRowsShow.OrderBy(exhibitRow => exhibitRow.GetComponent<ExhibitRow>().exhibitName).ToList();
+                break;
+            case SortOrder.EXHIBIT_NAME_DESCENDING:
+                exhibitRowsShow = exhibitRowsShow.OrderByDescending(exhibitRow => exhibitRow.GetComponent<ExhibitRow>().exhibitName).ToList();
+                break;
+            default:
+                break;
+        }
     }
 
     public void SwitchSummary(GameObject exhibitRow)
