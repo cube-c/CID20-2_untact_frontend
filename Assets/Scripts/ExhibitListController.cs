@@ -50,10 +50,8 @@ public class ExhibitListController : MonoBehaviour
         exhibitRowComponent.positionId = exhibitData.positionId;
         exhibitRowComponent.exhibitName = exhibit.name;
         exhibitRowComponent.summary = exhibitData.summary;
-        exhibitRowComponent.posx = exhibit.transform.position.x;
-        exhibitRowComponent.posy = exhibit.transform.position.y;
-        exhibitRowComponent.posz = exhibit.transform.position.z;
-        exhibitRowComponent.roty = exhibit.transform.rotation.eulerAngles.y;
+        exhibitRowComponent.teleportPosition = exhibit.transform.position + exhibit.transform.forward * 2.0f;
+        exhibitRowComponent.teleportRoty = exhibit.transform.rotation.eulerAngles.y + 180.0f;
         exhibitRowComponent.FillText();
 
         exhibitRowsAll.Add(exhibitRow);

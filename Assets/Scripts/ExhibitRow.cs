@@ -8,14 +8,20 @@ public class ExhibitRow : MonoBehaviour
     public string positionId;
     public string exhibitName;
     public string summary;
-    public float posx;
-    public float posy;
-    public float posz;
-    public float roty;
+    public Vector3 teleportPosition;
+    public float teleportRoty;
 
     public Text positionIdText;
     public Text exhibitNameText;
     public Image selectedRowImage;
+
+    public GameObject firstPersonController;
+
+
+    void Awake()
+    {
+        firstPersonController = GameObject.Find("FirstPersonController");
+    }
 
     public void FillText()
     {
@@ -35,15 +41,16 @@ public class ExhibitRow : MonoBehaviour
         }
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void Teleport()
     {
+        firstPersonController.transform.position = teleportPosition;
 
-    }
+        Vector3 teleportTransformEulerAngle = new Vector3(0, teleportRoty, 0);
+        firstPersonController.transform.eulerAngles = teleportTransformEulerAngle;
 
-    // Update is called once per frame
-    void Update()
-    {
+        Vector2 teleportLook = new Vector2(teleportRoty, 0);
+        firstPersonController.GetComponentInChildren<FirstPersonLook>().SetLook(teleportLook);
 
+        firstPersonController.transform.Find("Main Camera").transform.localEulerAngles = Vector3.zero;
     }
 }
