@@ -8,6 +8,7 @@ public class CollisionDetector : MonoBehaviour
     public float distance = 3;
     public Text text;
     public Text focus;
+
     void Update()
     {
         RaycastHit hit;

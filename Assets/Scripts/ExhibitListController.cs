@@ -26,6 +26,7 @@ public class ExhibitListController : MonoBehaviour
 
     public Text textPosition;
     public Text textName;
+    public Text searchText;
 
     public List<GameObject> exhibitRowsAll;
     public List<GameObject> exhibitRowsShow;
@@ -123,6 +124,26 @@ public class ExhibitListController : MonoBehaviour
         }
     }
 
+    public void Search()
+    {
+        if (searchText.text != "")
+        {
+            foreach (GameObject exhibitRow in exhibitRowsShow)
+            {
+                exhibitRow.SetActive(false);
+            }
+
+            exhibitRowsShow = exhibitRowsAll.Where(exhibitRow => exhibitRow.GetComponent<ExhibitRow>().exhibitName.ToUpper().Contains(searchText.text.ToUpper())).ToList();
+            Sort();
+            Show();
+        }
+        else
+        {
+            SetShowAll();
+            Show();
+        }
+    }
+
     public void SwitchSummary(GameObject exhibitRow)
     {
         if (exhibitRow != exhibitRowSummary)
@@ -168,6 +189,7 @@ public class ExhibitListController : MonoBehaviour
         {
             foreach (GameObject exhibitRow in exhibitRowsShow)
             {
+                exhibitRow.SetActive(true);
                 exhibitRow.transform.SetParent(content.transform);
                 exhibitRow.GetComponent<RectTransform>().localPosition = new Vector3(0, posy, 0);
                 posy -= rowHeight;
@@ -175,8 +197,10 @@ public class ExhibitListController : MonoBehaviour
         }
         else
         {
+            bool summaryRowIncluded = false;
             foreach (GameObject exhibitRow in exhibitRowsShow)
             {
+                exhibitRow.SetActive(true);
                 exhibitRow.transform.SetParent(content.transform);
                 exhibitRow.GetComponent<RectTransform>().localPosition = new Vector3(0, posy, 0);
                 posy -= rowHeight;
@@ -185,7 +209,15 @@ public class ExhibitListController : MonoBehaviour
                 {
                     summaryRow.GetComponent<RectTransform>().localPosition = new Vector3(0, posy, 0);
                     posy -= rowHeight;
+
+                    summaryRowIncluded = true;
                 }
+            }
+
+            if (!summaryRowIncluded)
+            {
+                summaryRow.SetActive(false);
+                exhibitRowSummary.GetComponent<ExhibitRow>().Mark(false);
             }
         }
     }
