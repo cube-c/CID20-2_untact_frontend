@@ -21,6 +21,8 @@ public class MenuController : MonoBehaviour
     public bool userListOn = false;
     public bool exhibitListOn = false;
 
+    public GameObject userListController;
+
     public void UserList()
     {
         userListOn = !userListOn;
@@ -37,6 +39,7 @@ public class MenuController : MonoBehaviour
             cb.selectedColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
             cb.highlightedColor = new Color(180f / 255, 180f / 255, 180f / 255, 1);
             buttonUser.colors = cb;
+            userListController.GetComponent<UserListController>().Refresh();
         }
         else
         {

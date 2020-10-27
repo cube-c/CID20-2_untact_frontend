@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 4064290483082591558}
   - component: {fileID: 4064290483082591559}
   m_Layer: 5
-  m_Name: TextConnect
+  m_Name: Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -250,7 +250,7 @@ GameObject:
   - component: {fileID: 4064290483672431004}
   - component: {fileID: 4064290483672431005}
   m_Layer: 5
-  m_Name: ButtonConnect
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -368,6 +368,7 @@ GameObject:
   - component: {fileID: 4064290483944040426}
   - component: {fileID: 4064290483944040424}
   - component: {fileID: 4064290483944040425}
+  - component: {fileID: 2721644447951363177}
   m_Layer: 5
   m_Name: UserRow
   m_TagString: Untagged
@@ -435,6 +436,25 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &2721644447951363177
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4064290483944040427}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 444147a881f7ad74684faeb69d99f29b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  userID: 
+  userTitle: 
+  userIDText: {fileID: 4064290483296191271}
+  userTitleText: {fileID: 4064290482945723755}
+  buttonImage: {fileID: 4064290483672431004}
+  button: {fileID: 4064290483672431005}
+  buttonText: {fileID: 4064290483082591559}
 --- !u!1 &4064290483966268038
 GameObject:
   m_ObjectHideFlags: 0
