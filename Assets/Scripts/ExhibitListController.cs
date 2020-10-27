@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-enum SortOrder
+enum ExhibitSortOrder
 {
     POSITION_ID_ASCENDING,
     POSITION_ID_DESCENDING,
@@ -33,7 +33,7 @@ public class ExhibitListController : MonoBehaviour
     public GameObject exhibitRowSummary;
     public GameObject summaryRow;
 
-    SortOrder sortOrder = SortOrder.POSITION_ID_ASCENDING;
+    ExhibitSortOrder sortOrder = ExhibitSortOrder.POSITION_ID_ASCENDING;
 
     void Awake()
     {
@@ -65,15 +65,15 @@ public class ExhibitListController : MonoBehaviour
 
     public void ClickPosition()
     {
-        if (sortOrder == SortOrder.POSITION_ID_ASCENDING)
+        if (sortOrder == ExhibitSortOrder.POSITION_ID_ASCENDING)
         {
-            sortOrder = SortOrder.POSITION_ID_DESCENDING;
+            sortOrder = ExhibitSortOrder.POSITION_ID_DESCENDING;
             textPosition.text = "위치 <size=8>▲</size>";
             textName.text = "이름";
         }
         else
         {
-            sortOrder = SortOrder.POSITION_ID_ASCENDING;
+            sortOrder = ExhibitSortOrder.POSITION_ID_ASCENDING;
             textPosition.text = "위치 <size=8>▼</size>";
             textName.text = "이름";
         }
@@ -84,15 +84,15 @@ public class ExhibitListController : MonoBehaviour
 
     public void ClickName()
     {
-        if (sortOrder == SortOrder.EXHIBIT_NAME_ASCENDING)
+        if (sortOrder == ExhibitSortOrder.EXHIBIT_NAME_ASCENDING)
         {
-            sortOrder = SortOrder.EXHIBIT_NAME_DESCENDING;
+            sortOrder = ExhibitSortOrder.EXHIBIT_NAME_DESCENDING;
             textPosition.text = "위치";
             textName.text = "이름 <size=8>▲</size>";
         }
         else
         {
-            sortOrder = SortOrder.EXHIBIT_NAME_ASCENDING;
+            sortOrder = ExhibitSortOrder.EXHIBIT_NAME_ASCENDING;
             textPosition.text = "위치";
             textName.text = "이름 <size=8>▼</size>";
         }
@@ -105,16 +105,16 @@ public class ExhibitListController : MonoBehaviour
     {
         switch (sortOrder)
         {
-            case SortOrder.POSITION_ID_ASCENDING:
+            case ExhibitSortOrder.POSITION_ID_ASCENDING:
                 exhibitRowsShow = exhibitRowsShow.OrderBy(exhibitRow => exhibitRow.GetComponent<ExhibitRow>().positionId).ToList();
                 break;
-            case SortOrder.POSITION_ID_DESCENDING:
+            case ExhibitSortOrder.POSITION_ID_DESCENDING:
                 exhibitRowsShow = exhibitRowsShow.OrderByDescending(exhibitRow => exhibitRow.GetComponent<ExhibitRow>().positionId).ToList();
                 break;
-            case SortOrder.EXHIBIT_NAME_ASCENDING:
+            case ExhibitSortOrder.EXHIBIT_NAME_ASCENDING:
                 exhibitRowsShow = exhibitRowsShow.OrderBy(exhibitRow => exhibitRow.GetComponent<ExhibitRow>().exhibitName).ToList();
                 break;
-            case SortOrder.EXHIBIT_NAME_DESCENDING:
+            case ExhibitSortOrder.EXHIBIT_NAME_DESCENDING:
                 exhibitRowsShow = exhibitRowsShow.OrderByDescending(exhibitRow => exhibitRow.GetComponent<ExhibitRow>().exhibitName).ToList();
                 break;
             default:
