@@ -21,12 +21,7 @@ public class CollisionDetector : MonoBehaviour
                 focus.text = "<color=red>+</color>";
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    text.text = "<size=25><b>" + data.name + "</b></size>" + "    " +
-                                data.positionId + " " +
-                                hit.transform.position.x + " " +
-                                hit.transform.position.y + " " +
-                                hit.transform.position.z + " " +
-                                hit.transform.rotation.eulerAngles.y + "\n" +
+                    text.text = "<size=25><b>" + data.name + "</b></size>" + "    전시 위치 : " + data.positionId + "\n" +
                                 "<size=15><b>" + data.summary + "</b></size>" + "\n" +
                                 data.info;
                 }
