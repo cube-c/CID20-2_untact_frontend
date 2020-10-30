@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class HoverLine : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class HoverBold : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     private Text text;
     private string content;
