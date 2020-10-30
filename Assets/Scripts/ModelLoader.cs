@@ -2,6 +2,7 @@
 using System.IO;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 using Siccity.GLTFUtility;
 
@@ -33,32 +34,38 @@ public class ExhibitList
 public class ModelLoader : MonoBehaviour
 {
     public ExhibitListController exhibitListController;
-    public GameObject LoadingPanel;
+    public RectTransform progressBar;
+    public Text log;
 
-    GameObject wrapper;
-    string filePath;
+    private GameObject wrapper;
+    private string filePath;
 
-    int allExhibitNum = -1;
-    int currentLoadedExhibitNum = 0;
+    private int requiredCount;
+    private int loadedCount;
 
     void Start()
     {
+        requiredCount = -1;
+        loadedCount = 0;
+        log.text = "";
         filePath = $"{Application.persistentDataPath}/Assets/Models/";
         wrapper = new GameObject
         {
             name = "Exhibit"
         };
-
+        
         StartCoroutine(GetExhibitRequest());
     }
 
     void Update()
     {
-        if (currentLoadedExhibitNum == allExhibitNum)
+        float percentage = requiredCount > 0 ? (float)loadedCount / requiredCount : 0f;
+        progressBar.localScale = new Vector3(percentage, 1f, 1f);
+
+        if (loadedCount == requiredCount)
         {
             exhibitListController.SetShowAll();
             exhibitListController.Show();
-            LoadingPanel.SetActive(false);
             gameObject.SetActive(false);
         }
     }
@@ -81,14 +88,13 @@ public class ModelLoader : MonoBehaviour
 
             if (req.isNetworkError || req.isHttpError)
             {
-                Debug.Log(req.error);
+                log.text = req.error;
                 // Delete wrongly cached file
                 File.Delete(GetFilePath(url));
             }
             else
             {
-                Debug.Log($"Downloaded file : {url}");
-                // Save the model
+                log.text = $"Downloaded file : {url}";
                 LoadModel(exhibit);
             }
         }
@@ -102,24 +108,25 @@ public class ModelLoader : MonoBehaviour
 
             if (req.isNetworkError || req.isHttpError)
             {
-                Debug.Log(req.error);
+                log.text = req.error;
             }
             else
             {
                 ExhibitList exhibitList = JsonUtility.FromJson<ExhibitList>("{\"exhibits\":" + req.downloadHandler.text + "}");
 
-                allExhibitNum = exhibitList.exhibits.Length;
+                requiredCount = exhibitList.exhibits.Length;
                 foreach (Exhibit exhibit in exhibitList.exhibits)
                 {
                     string path = GetFilePath(exhibit.mesh);
                     if (File.Exists(path))
                     {
-                        Debug.Log($"Found file locally : {path}");
+                        log.text = $"Found file locally : {path}";
                         LoadModel(exhibit);
+                        yield return null;
                     }
                     else
                     {
-                        StartCoroutine(GetModelRequest(exhibit));
+                        yield return StartCoroutine(GetModelRequest(exhibit));
                     }
                 }
             }
@@ -142,6 +149,6 @@ public class ModelLoader : MonoBehaviour
         data.info = exhibit.info;
 
         exhibitListController.GetExhibit(exhibitObject);
-        currentLoadedExhibitNum += 1;
+        loadedCount += 1;
     }
 }
