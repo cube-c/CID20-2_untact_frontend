@@ -27,6 +27,7 @@ public class LoginController : MonoBehaviour
     public GameObject signupCompletePage;
 
     private string csrfCookie;
+    private State currentState;
 
     void Start()
     {
@@ -50,6 +51,7 @@ public class LoginController : MonoBehaviour
 
     public void ChangeState(State state)
     {
+        currentState = state;
         loginPage.SetActive(false);
         signupPage.SetActive(false);
         signupCompletePage.SetActive(false);
