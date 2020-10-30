@@ -11,6 +11,8 @@ public class LoginController : MonoBehaviour
 {
     public InputField username;
     public InputField password;
+    public Button loginButton;
+    public Text loginNotice;
 
     public void Login()
     {
@@ -19,11 +21,13 @@ public class LoginController : MonoBehaviour
 
     IEnumerator LoginRequest()
     {
+        loginButton.enabled = false;
         UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
         yield return getToken.SendWebRequest();
         if (getToken.isNetworkError || getToken.isHttpError)
         {
-            Debug.Log(getToken.error);
+            loginButton.enabled = true;
+            loginNotice.text = "Unable to connect to the server";
             yield break;
         }
 
@@ -44,9 +48,16 @@ public class LoginController : MonoBehaviour
 
         yield return doLogin.SendWebRequest();
 
-        if (doLogin.isNetworkError || doLogin.isHttpError)
+        if (doLogin.isNetworkError)
         {
-            Debug.Log(doLogin.error);
+            loginButton.enabled = true;
+            loginNotice.text = "Unable to connect to the server";
+            yield break;
+        }
+        else if (doLogin.isHttpError)
+        {
+            loginButton.enabled = true;
+            loginNotice.text = "Username or password is incorrect";
             yield break;
         }
 
