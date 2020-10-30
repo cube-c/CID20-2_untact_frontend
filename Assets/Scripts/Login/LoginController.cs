@@ -49,6 +49,15 @@ public class LoginController : MonoBehaviour
         ChangeState((State)state);
     }
 
+    public void Quit()
+    {
+        #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        #else
+        Application.Quit();
+        #endif
+    }
+
     public void ChangeState(State state)
     {
         currentState = state;
