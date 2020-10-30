@@ -1013,6 +1013,7 @@ GameObject:
   - component: {fileID: 607364871}
   - component: {fileID: 607364870}
   - component: {fileID: 607364873}
+  - component: {fileID: 607364874}
   m_Layer: 5
   m_Name: Username
   m_TagString: Untagged
@@ -1155,6 +1156,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSelectable: {fileID: 1699216158}
+--- !u!114 &607364874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 607364868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c701f850e0041784ab2caf5be44cef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 756079994}
 --- !u!1 &690523643
 GameObject:
   m_ObjectHideFlags: 0
@@ -1707,6 +1721,7 @@ GameObject:
   - component: {fileID: 762588314}
   - component: {fileID: 762588313}
   - component: {fileID: 762588316}
+  - component: {fileID: 762588317}
   m_Layer: 5
   m_Name: Username
   m_TagString: Untagged
@@ -1849,6 +1864,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSelectable: {fileID: 1164998143}
+--- !u!114 &762588317
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 762588311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c701f850e0041784ab2caf5be44cef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 1751723194}
 --- !u!1 &869406292
 GameObject:
   m_ObjectHideFlags: 0
@@ -2099,6 +2127,7 @@ GameObject:
   - component: {fileID: 1164998144}
   - component: {fileID: 1164998143}
   - component: {fileID: 1164998146}
+  - component: {fileID: 1164998147}
   m_Layer: 5
   m_Name: Password
   m_TagString: Untagged
@@ -2241,6 +2270,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSelectable: {fileID: 1751723194}
+--- !u!114 &1164998147
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164998141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c701f850e0041784ab2caf5be44cef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 1751723194}
 --- !u!1 &1176756511
 GameObject:
   m_ObjectHideFlags: 0
@@ -2785,6 +2827,7 @@ GameObject:
   - component: {fileID: 1699216159}
   - component: {fileID: 1699216158}
   - component: {fileID: 1699216161}
+  - component: {fileID: 1699216162}
   m_Layer: 5
   m_Name: Password
   m_TagString: Untagged
@@ -2927,6 +2970,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   nextSelectable: {fileID: 756079994}
+--- !u!114 &1699216162
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1699216156}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c701f850e0041784ab2caf5be44cef62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  button: {fileID: 756079994}
 --- !u!1 &1735553554
 GameObject:
   m_ObjectHideFlags: 0
