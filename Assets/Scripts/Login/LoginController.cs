@@ -141,6 +141,20 @@ public class LoginController : MonoBehaviour
             yield break;
         }
 
+        if (currentUsername.Length < 4 || currentUsername.Length > 16)
+        {
+            signupButton.enabled = true;
+            signupNotice.text = "Username must be 4-16 characters long.";
+            yield break;
+        }
+
+        if (currentPassword.Length < 8 || currentPassword.Length > 128)
+        {
+            signupButton.enabled = true;
+            signupNotice.text = "Password must be 8-128 characters long.";
+            yield break;
+        }
+
         yield return StartCoroutine(TokenRequest());
 
         if (csrfCookie == null)
