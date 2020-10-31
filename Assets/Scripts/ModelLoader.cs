@@ -33,6 +33,7 @@ public class ExhibitList
 
 public class ModelLoader : MonoBehaviour
 {
+    public GameObject firstPersonController;
     public ExhibitListController exhibitListController;
     public RectTransform progressBar;
     public Text log;
@@ -66,6 +67,13 @@ public class ModelLoader : MonoBehaviour
         {
             exhibitListController.SetShowAll();
             exhibitListController.Show();
+            firstPersonController.GetComponent<FirstPersonMovement>().enabled = true;
+            firstPersonController.GetComponent<Jump>().enabled = true;
+            firstPersonController.GetComponent<Crouch>().enabled = true;
+            firstPersonController.GetComponent<MenuController>().enabled = true;
+            firstPersonController.GetComponentInChildren<FirstPersonLook>().enabled = true;
+            firstPersonController.GetComponentInChildren<Zoom>().enabled = true;
+            firstPersonController.GetComponentInChildren<CollisionDetector>().enabled = true;
             gameObject.SetActive(false);
         }
     }
