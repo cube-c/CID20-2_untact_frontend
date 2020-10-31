@@ -224,7 +224,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
+    m_Font: {fileID: 12800000, guid: 5579c8ccf5447bc4899c26e5ab68c295, type: 3}
     m_FontSize: 11
     m_FontStyle: 0
     m_BestFit: 0
@@ -486,11 +486,11 @@ MonoBehaviour:
   exhibitName: 
   summary: 
   teleportPosition: {x: 0, y: 0, z: 0}
-  teleportEulerAngle: {x: 0, y: 0, z: 0}
+  teleportRoty: 0
   positionIdText: {fileID: 1835294539841427102}
   exhibitNameText: {fileID: 1835294540258580690}
   selectedRowImage: {fileID: 9196276486182826235}
-  userTransform: {fileID: 0}
+  firstPersonController: {fileID: 0}
 --- !u!114 &-3996185498462173128
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -22,7 +22,9 @@ public class CollisionDetector : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     text.text = "<size=25><b>" + data.name + "</b></size>" + "    전시 위치 : " + data.positionId + "\n" +
+                                "<size=3>\n</size>" +
                                 "<size=15><b>" + data.summary + "</b></size>" + "\n" +
+                                "<size=3>\n</size>" +
                                 data.info;
                 }
                 return;
