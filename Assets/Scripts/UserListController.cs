@@ -1,8 +1,19 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+
+
+[Serializable]
+public class User
+{
+    public string name;
+    public string title;
+    public string u;
+}
 
 enum UserSortOrder
 {
@@ -48,13 +59,34 @@ public class UserListController : MonoBehaviour
 
     public void Refresh() // runs when menu button or refresh button clicked
     {
-        // foreach (userRow in userRowsAll)
-        // { userRowsAll.Remove(userRow); Destory(userRow); }
-        // run GetUserRequest coroutine
+        foreach (GameObject userRow in userRowsAll)
+        {
+            userRowsAll.Remove(userRow);
+            Destroy(userRow);
+        }
+
+        StartCoroutine(GetUserRequest());
         // get all user status by GetUser (online, offline (+DND))
         // make new userRowsAll
-        SetShowAll();
-        Show();
+        SetShowAll(); // TODO: move in to GetUserRequest
+        Show(); // TODO: move in to GetUserRequest
+    }
+
+    IEnumerator GetUserRequest()
+    {
+        using (UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/userStatus/"))
+        {
+            yield return req.SendWebRequest();
+
+            if (req.isNetworkError || req.isHttpError)
+            {
+                Debug.Log(req.error);
+            }
+            else
+            {
+                Debug.Log(req.downloadHandler.text);
+            }
+        }
     }
 
     public void SetShowAll()

@@ -1,12 +1,22 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using System.Text.RegularExpressions;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using UnityEngine.Networking;
-using UnityEngine.UI;
 using UnityEngine.EventSystems;
+
+
+[Serializable]
+public class MyInfo
+{
+    public string user_name;
+    public string user_title;
+}
+
 
 public class MenuController : MonoBehaviour
 {
@@ -21,9 +31,55 @@ public class MenuController : MonoBehaviour
     public bool userListOn = false;
     public bool exhibitListOn = false;
 
+    public MyInfo myInfo;
+    public Text textMyID;
+    public Text textMyTitle;
+
     public GameObject userListController;
 
-    public void UserList()
+
+    void Start()
+    {
+        StartCoroutine(GetInfoRequest());
+    }
+
+    IEnumerator GetInfoRequest()
+    {
+        UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
+        yield return getToken.SendWebRequest();
+        if (getToken.isNetworkError || getToken.isHttpError)
+        {
+            Debug.Log(getToken.error);
+            yield break;
+        }
+
+        // get the csrf cookie
+        string SetCookie = getToken.GetResponseHeader("set-cookie");
+        Regex rxCookie = new Regex("csrftoken=(?<csrf_token>.{64});");
+        MatchCollection cookieMatches = rxCookie.Matches(SetCookie);
+        string csrfCookie = cookieMatches[0].Groups["csrf_token"].Value;
+
+        UnityWebRequest getInfo = UnityWebRequest.Get("http://localhost:8000/api/myInfo/");
+
+        getInfo.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        getInfo.SetRequestHeader("X-CSRFTOKEN", csrfCookie);
+
+        yield return getInfo.SendWebRequest();
+
+        if (getInfo.isNetworkError || getInfo.isHttpError)
+        {
+            Debug.Log(getInfo.error);
+            yield break;
+        }
+        else
+        {
+            myInfo = JsonUtility.FromJson<MyInfo>(getInfo.downloadHandler.text);
+            textMyID.text = myInfo.user_name;
+            textMyTitle.text = myInfo.user_title;
+        }
+    }
+
+        public void UserList()
     {
         userListOn = !userListOn;
         userWindow.SetActive(userListOn);
