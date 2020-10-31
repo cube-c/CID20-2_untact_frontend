@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
@@ -12,6 +14,7 @@ public class Exhibit
 {
     public int id;
     public string mesh;
+    public string hash;
 
     public string name;
     public string summary;
@@ -128,9 +131,29 @@ public class ModelLoader : MonoBehaviour
                     string path = GetFilePath(exhibit.mesh);
                     if (File.Exists(path))
                     {
-                        log.text = $"Found file locally : {path}";
-                        LoadModel(exhibit);
-                        yield return null;
+                        MD5 md5 = MD5.Create();
+                        StringBuilder hashBuilder = new StringBuilder();
+                        String hash;
+                        using (var file = File.OpenRead(path))
+                        {
+                            foreach (byte b in md5.ComputeHash(file))
+                            {
+                                hashBuilder.Append(b.ToString("x2"));
+                            }
+                            hash = hashBuilder.ToString();
+                        }
+
+                        if (exhibit.hash == hash)
+                        {
+                            log.text = $"Found file locally : {path}";
+                            LoadModel(exhibit);
+                            yield return null;
+                        }
+                        else
+                        {
+                            File.Delete(path);
+                            yield return StartCoroutine(GetModelRequest(exhibit));
+                        }
                     }
                     else
                     {
