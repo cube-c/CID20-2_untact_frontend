@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
 using Siccity.GLTFUtility;
 
 
@@ -41,11 +42,15 @@ public class ModelLoader : MonoBehaviour
     public RectTransform progressBar;
     public Text log;
 
+    public Button restartButton;
+    public Button exitButton;
+
     private GameObject wrapper;
     private string filePath;
 
     private int requiredCount;
     private int loadedCount;
+    private bool loadStatus;
 
     void Start()
     {
@@ -57,7 +62,7 @@ public class ModelLoader : MonoBehaviour
         {
             name = "Exhibit"
         };
-        
+        SetLoadStatus(true);
         StartCoroutine(GetExhibitRequest());
     }
 
@@ -81,6 +86,24 @@ public class ModelLoader : MonoBehaviour
         }
     }
 
+    void SetLoadStatus(bool state)
+    {
+        loadStatus = state;
+        restartButton.gameObject.SetActive(!state);
+        exitButton.gameObject.SetActive(!state);
+    }
+
+    public void RestartDownload()
+    {
+        log.text = "";
+        SetLoadStatus(true);
+    }
+
+    public void ExitToLoginPage()
+    {
+        SceneManager.LoadScene("LoginScene");
+    }
+
     string GetFilePath(string url)
     {
         string[] pieces = url.Split('/');
@@ -92,39 +115,51 @@ public class ModelLoader : MonoBehaviour
     IEnumerator GetModelRequest(Exhibit exhibit)
     {
         string url = "http://localhost:8000/media/" + exhibit.mesh;
-        using (UnityWebRequest req = UnityWebRequest.Get(url))
+        while (true)
         {
+            UnityWebRequest req = UnityWebRequest.Get(url);
             req.downloadHandler = new DownloadHandlerFile(GetFilePath(url));
             yield return req.SendWebRequest();
 
             if (req.isNetworkError || req.isHttpError)
             {
                 log.text = req.error;
-                // Delete wrongly cached file
                 File.Delete(GetFilePath(url));
+                SetLoadStatus(false);
+                while (!loadStatus)
+                {
+                    yield return null;
+                }
             }
             else
             {
                 log.text = $"Downloaded file : {url}";
                 LoadModel(exhibit);
+                break;
             }
         }
+
     }
 
     IEnumerator GetExhibitRequest()
     {
-        using (UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/exhibit/"))
+        while (true)
         {
+            UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/exhibit/");
             yield return req.SendWebRequest();
 
             if (req.isNetworkError || req.isHttpError)
             {
                 log.text = req.error;
+                SetLoadStatus(false);
+                while (!loadStatus)
+                {
+                    yield return null;
+                }
             }
             else
             {
                 ExhibitList exhibitList = JsonUtility.FromJson<ExhibitList>("{\"exhibits\":" + req.downloadHandler.text + "}");
-
                 requiredCount = exhibitList.exhibits.Length;
                 foreach (Exhibit exhibit in exhibitList.exhibits)
                 {
@@ -160,8 +195,10 @@ public class ModelLoader : MonoBehaviour
                         yield return StartCoroutine(GetModelRequest(exhibit));
                     }
                 }
+                break;
             }
         }
+
     }
 
     void LoadModel(Exhibit exhibit)
