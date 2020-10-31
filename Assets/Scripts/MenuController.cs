@@ -23,6 +23,7 @@ public class MenuController : MonoBehaviour
     public GameObject menu;
     public Button buttonUser;
     public Button buttonExhibit;
+    public Toggle toggleDND;
     public GameObject userWindow;
     public Image userWindowBar;
     public GameObject exhibitWindow;
@@ -79,7 +80,86 @@ public class MenuController : MonoBehaviour
         }
     }
 
-        public void UserList()
+    public void Logout()
+    {
+        menu.SetActive(false);
+        StartCoroutine(LogoutRequest());
+    }
+
+    IEnumerator LogoutRequest()
+    {
+        UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
+        yield return getToken.SendWebRequest();
+        if (getToken.isNetworkError || getToken.isHttpError)
+        {
+            Debug.Log(getToken.error);
+            yield break;
+        }
+
+        // get the csrf cookie
+        string SetCookie = getToken.GetResponseHeader("set-cookie");
+        Regex rxCookie = new Regex("csrftoken=(?<csrf_token>.{64});");
+        MatchCollection cookieMatches = rxCookie.Matches(SetCookie);
+        string csrfCookie = cookieMatches[0].Groups["csrf_token"].Value;
+
+        UnityWebRequest doLogout = UnityWebRequest.Post("http://localhost:8000/api/logout/", "");
+
+        doLogout.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        doLogout.SetRequestHeader("X-CSRFTOKEN", csrfCookie);
+
+        yield return doLogout.SendWebRequest();
+
+        if (doLogout.isNetworkError || doLogout.isHttpError)
+        {
+            Debug.Log(doLogout.error);
+            yield break;
+        }
+
+        SceneManager.LoadScene("LoginScene");
+    }
+
+    public void ToggleDND()
+    {
+        toggleDND.enabled = false;
+        StartCoroutine(dndSwitchRequest(toggleDND.isOn));
+    }
+
+    IEnumerator dndSwitchRequest(bool dndIsOn)
+    {
+        UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
+        yield return getToken.SendWebRequest();
+        if (getToken.isNetworkError || getToken.isHttpError)
+        {
+            Debug.Log(getToken.error);
+            yield break;
+        }
+
+        // get the csrf cookie
+        string SetCookie = getToken.GetResponseHeader("set-cookie");
+        Regex rxCookie = new Regex("csrftoken=(?<csrf_token>.{64});");
+        MatchCollection cookieMatches = rxCookie.Matches(SetCookie);
+        string csrfCookie = cookieMatches[0].Groups["csrf_token"].Value;
+
+        WWWForm form = new WWWForm();
+        form.AddField("dndswitch", dndIsOn.ToString());
+
+        UnityWebRequest dndSwitch = UnityWebRequest.Post("http://localhost:8000/api/dndSwitch/", form);
+
+        dndSwitch.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        dndSwitch.SetRequestHeader("X-CSRFTOKEN", csrfCookie);
+
+        yield return dndSwitch.SendWebRequest();
+
+        if (dndSwitch.isNetworkError || dndSwitch.isHttpError)
+        {
+            Debug.Log(dndSwitch.error);
+            yield break;
+        }
+
+        toggleDND.enabled = true;
+    }
+
+    public void UserList()
     {
         userListOn = !userListOn;
         userWindow.SetActive(userListOn);
@@ -134,44 +214,6 @@ public class MenuController : MonoBehaviour
         }
 
         EventSystem.current.SetSelectedGameObject(null);
-    }
-
-    public void Logout()
-    {
-        menu.SetActive(false);
-        StartCoroutine(LogoutRequest());
-    }
-
-    IEnumerator LogoutRequest()
-    {
-        UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
-        yield return getToken.SendWebRequest();
-        if (getToken.isNetworkError || getToken.isHttpError)
-        {
-            Debug.Log(getToken.error);
-            yield break;
-        }
-
-        // get the csrf cookie
-        string SetCookie = getToken.GetResponseHeader("set-cookie");
-        Regex rxCookie = new Regex("csrftoken=(?<csrf_token>.{64});");
-        MatchCollection cookieMatches = rxCookie.Matches(SetCookie);
-        string csrfCookie = cookieMatches[0].Groups["csrf_token"].Value;
-
-        UnityWebRequest doLogout = UnityWebRequest.Post("http://localhost:8000/api/logout/", "");
-
-        doLogout.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        doLogout.SetRequestHeader("X-CSRFTOKEN", csrfCookie);
-
-        yield return doLogout.SendWebRequest();
-
-        if (doLogout.isNetworkError || doLogout.isHttpError)
-        {
-            Debug.Log(doLogout.error);
-            yield break;
-        }
-
-        SceneManager.LoadScene("LoginScene");
     }
 
     void Update()
