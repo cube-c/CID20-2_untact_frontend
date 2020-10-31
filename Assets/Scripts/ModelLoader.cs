@@ -101,6 +101,7 @@ public class ModelLoader : MonoBehaviour
 
     public void ExitToLoginPage()
     {
+        UnityWebRequest.ClearCookieCache();
         SceneManager.LoadScene("LoginScene");
     }
 
