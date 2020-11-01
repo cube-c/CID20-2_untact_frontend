@@ -21,8 +21,8 @@ public class ExhibitListController : MonoBehaviour
 
     public GameObject exhibitRowPrefab;
 
-    public const float rowHeight = 25;
-    public const int numberOfRowsInWindow = 11;
+    public const float rowHeight = 40;
+    public const int numberOfRowsInWindow = 10;
 
     public Text textPosition;
     public Text textName;
@@ -68,13 +68,13 @@ public class ExhibitListController : MonoBehaviour
         if (sortOrder == ExhibitSortOrder.POSITION_ID_ASCENDING)
         {
             sortOrder = ExhibitSortOrder.POSITION_ID_DESCENDING;
-            textPosition.text = "위치 <size=8>▲</size>";
+            textPosition.text = "위치 <size=12>▲</size>";
             textName.text = "이름";
         }
         else
         {
             sortOrder = ExhibitSortOrder.POSITION_ID_ASCENDING;
-            textPosition.text = "위치 <size=8>▼</size>";
+            textPosition.text = "위치 <size=12>▼</size>";
             textName.text = "이름";
         }
 
@@ -88,13 +88,13 @@ public class ExhibitListController : MonoBehaviour
         {
             sortOrder = ExhibitSortOrder.EXHIBIT_NAME_DESCENDING;
             textPosition.text = "위치";
-            textName.text = "이름 <size=8>▲</size>";
+            textName.text = "이름 <size=12>▲</size>";
         }
         else
         {
             sortOrder = ExhibitSortOrder.EXHIBIT_NAME_ASCENDING;
             textPosition.text = "위치";
-            textName.text = "이름 <size=8>▼</size>";
+            textName.text = "이름 <size=12>▼</size>";
         }
 
         Sort();

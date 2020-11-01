@@ -41,6 +41,7 @@ public class MenuController : MonoBehaviour
 
     void Start()
     {
+        SwitchDND();
         StartCoroutine(GetInfoRequest());
     }
 
@@ -118,7 +119,7 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene("LoginScene");
     }
 
-    public void ToggleDND()
+    public void SwitchDND()
     {
         toggleDND.enabled = false;
         StartCoroutine(dndSwitchRequest(toggleDND.isOn));

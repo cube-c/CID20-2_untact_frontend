@@ -12,7 +12,13 @@ public class User
 {
     public string name;
     public string title;
-    public string u;
+    public string status;
+}
+
+[Serializable]
+public class UserList
+{
+    public User[] users;
 }
 
 enum UserSortOrder
@@ -31,8 +37,8 @@ public class UserListController : MonoBehaviour
 
     public GameObject userRowPrefab;
 
-    public const float rowHeight = 25;
-    public const int numberOfRowsInWindow = 11;
+    public const float rowHeight = 40;
+    public const int numberOfRowsInWindow = 10;
 
     public Text textID;
     public Text textTitle;
@@ -50,26 +56,42 @@ public class UserListController : MonoBehaviour
         userRowsAll = new List<GameObject>();
     }
 
-    public void GetUser(/*argument*/)
+    public void GetUser(User user)
     {
-        // argument -> userRow
-        // instantiate userRow
-        // userRowsAll.Add(userRow)
+        GameObject userRow = Instantiate(userRowPrefab);
+        UserRow userRowComponent = userRow.GetComponent<UserRow>();
+
+        userRowComponent.userID = user.name;
+        userRowComponent.userTitle = user.title;
+        userRowComponent.FillText();
+        switch (user.status)
+        {
+            case "online":
+                userRowComponent.SetOnline();
+                break;
+            /*
+            case "offline":
+                userRowComponent.SetOffline();
+                break;
+            */
+            case "dnd":
+                userRowComponent.SetDND();
+                break;
+            default:
+                break;
+        }
+
+        userRowsAll.Add(userRow);
     }
 
     public void Refresh() // runs when menu button or refresh button clicked
     {
         foreach (GameObject userRow in userRowsAll)
         {
-            userRowsAll.Remove(userRow);
             Destroy(userRow);
         }
-
+        userRowsAll = new List<GameObject>();
         StartCoroutine(GetUserRequest());
-        // get all user status by GetUser (online, offline (+DND))
-        // make new userRowsAll
-        SetShowAll(); // TODO: move in to GetUserRequest
-        Show(); // TODO: move in to GetUserRequest
     }
 
     IEnumerator GetUserRequest()
@@ -84,9 +106,15 @@ public class UserListController : MonoBehaviour
             }
             else
             {
-                Debug.Log(req.downloadHandler.text);
+                UserList userList = JsonUtility.FromJson<UserList>("{\"users\":" + req.downloadHandler.text + "}");
+                foreach (User user in userList.users)
+                {
+                    GetUser(user);
+                }
             }
         }
+        SetShowAll();
+        Show();
     }
 
     public void SetShowAll()
@@ -100,13 +128,13 @@ public class UserListController : MonoBehaviour
         if (sortOrder == UserSortOrder.USER_ID_ASCENDING)
         {
             sortOrder = UserSortOrder.USER_ID_DESCENDING;
-            textID.text = "ID <size=8>▲</size>";
+            textID.text = "ID <size=12>▲</size>";
             textTitle.text = "직책";
         }
         else
         {
             sortOrder = UserSortOrder.USER_ID_ASCENDING;
-            textID.text = "ID <size=8>▼</size>";
+            textID.text = "ID <size=12>▼</size>";
             textTitle.text = "직책";
         }
 
@@ -120,13 +148,13 @@ public class UserListController : MonoBehaviour
         {
             sortOrder = UserSortOrder.USER_TITLE_DESCENDING;
             textID.text = "ID";
-            textTitle.text = "직책 <size=8>▲</size>";
+            textTitle.text = "직책 <size=12>▲</size>";
         }
         else
         {
             sortOrder = UserSortOrder.USER_TITLE_ASCENDING;
             textID.text = "ID";
-            textTitle.text = "직책 <size=8>▼</size>";
+            textTitle.text = "직책 <size=12>▼</size>";
         }
 
         Sort();

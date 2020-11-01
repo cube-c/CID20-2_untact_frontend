@@ -6,8 +6,8 @@ using TMPro;
 public class SummaryScroller : MonoBehaviour
 {
     public TextMeshProUGUI textSummary;
-    public float scrollSpeed = 50;
-    public const float summaryColumnWidth = 380;
+    public float scrollSpeed = 75;
+    public const float summaryColumnWidth = 500;
     public const float padding = 10;
 
     RectTransform textRectTransform;

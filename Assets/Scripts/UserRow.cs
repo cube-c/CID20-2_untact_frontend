@@ -29,14 +29,14 @@ public class UserRow : MonoBehaviour
         button.enabled = true;
         buttonText.text = "연결";
     }
-
+    /*
     public void SetOffline()
     {
         buttonImage.color = new Color(200f / 255, 50f / 255, 50f / 255, 1);
         button.enabled = false;
         buttonText.text = "";
     }
-
+    */
     public void SetDND()
     {
         buttonImage.color = new Color(200f / 255, 200f / 255, 50f / 255, 1);
