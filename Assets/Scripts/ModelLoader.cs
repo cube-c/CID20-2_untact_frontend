@@ -79,6 +79,7 @@ public class ModelLoader : MonoBehaviour
             firstPersonController.GetComponent<Jump>().enabled = true;
             firstPersonController.GetComponent<Crouch>().enabled = true;
             firstPersonController.GetComponent<MenuController>().enabled = true;
+            firstPersonController.GetComponent<APIBlankSender>().enabled = true;
             firstPersonController.GetComponentInChildren<FirstPersonLook>().enabled = true;
             firstPersonController.GetComponentInChildren<Zoom>().enabled = true;
             firstPersonController.GetComponentInChildren<CollisionDetector>().enabled = true;
