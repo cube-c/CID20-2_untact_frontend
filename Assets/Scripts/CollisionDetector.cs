@@ -8,6 +8,7 @@ public class CollisionDetector : MonoBehaviour
     public float distance = 3;
     public Text text;
     public Text focus;
+
     void Update()
     {
         RaycastHit hit;
@@ -17,16 +18,13 @@ public class CollisionDetector : MonoBehaviour
             ExhibitData data = hit.transform.GetComponent<ExhibitData>();
             if (data != null)
             {
-                focus.text = "<color=blue>+</color>";
+                focus.text = "<color=red>+</color>";
                 if (Input.GetKeyDown(KeyCode.E))
                 {
-                    text.text = "<size=25><b>" + data.name + "</b></size>" + "    " +
-                                data.position_id + " " +
-                                hit.transform.position.x + " " +
-                                hit.transform.position.y + " " +
-                                hit.transform.position.z + " " +
-                                hit.transform.rotation.eulerAngles.y + "\n" +
+                    text.text = "<size=25><b>" + data.name + "</b></size>" + "    전시 위치 : " + data.positionId + "\n" +
+                                "<size=3>\n</size>" +
                                 "<size=15><b>" + data.summary + "</b></size>" + "\n" +
+                                "<size=3>\n</size>" +
                                 data.info;
                 }
                 return;

@@ -2,9 +2,8 @@
 
 public class FirstPersonLook : MonoBehaviour
 {
-    [SerializeField]
-    Transform character;
-    Vector2 currentMouseLook;
+    [SerializeField] Transform character;
+    [SerializeField] Vector2 currentMouseLook;
     Vector2 appliedMouseDelta;
     public float sensitivity = 1;
     public float smoothing = 2;
@@ -31,5 +30,10 @@ public class FirstPersonLook : MonoBehaviour
         // Rotate camera and controller.
         transform.localRotation = Quaternion.AngleAxis(-currentMouseLook.y, Vector3.right);
         character.localRotation = Quaternion.AngleAxis(currentMouseLook.x, Vector3.up);
+    }
+
+    public void SetLook(Vector2 mouseLook)
+    {
+        currentMouseLook = mouseLook;
     }
 }

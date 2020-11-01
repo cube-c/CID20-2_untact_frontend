@@ -1,17 +1,21 @@
 ﻿using System;
 using System.IO;
+using System.Text;
 using System.Collections;
+using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.Networking;
-using Siccity.GLTFUtility;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
+using Siccity.GLTFUtility;
+
 
 [Serializable]
 public class Exhibit
 {
     public int id;
     public string mesh;
+    public string hash;
 
     public string name;
     public string summary;
@@ -33,30 +37,73 @@ public class ExhibitList
 
 public class ModelLoader : MonoBehaviour
 {
-    GameObject wrapper;
-    string filePath;
+    public GameObject firstPersonController;
+    public ExhibitListController exhibitListController;
+    public RectTransform progressBar;
+    public Text log;
 
-    int maxExhibitCounter;
-    int currLoadedExhibitCounter;
-    string entireExhibitLoadingMessage;
-    string modelDownloadMessage;
+    public Button restartButton;
+    public Button exitButton;
 
-    public Text entireLoadingText;
-    public Text fileDownloadText;
+    private GameObject wrapper;
+    private string filePath;
 
-    bool isDownload;
+    private int requiredCount;
+    private int loadedCount;
+    private bool loadStatus;
 
-    private void Start()
+    void Start()
     {
+        requiredCount = -1;
+        loadedCount = 0;
+        log.text = "";
         filePath = $"{Application.persistentDataPath}/Assets/Models/";
-        
         wrapper = new GameObject
         {
             name = "Exhibit"
         };
-        DontDestroyOnLoad(wrapper); // LoadingScene 에서 Load한 오브젝트들이 포함된 wrapper가 MainScene을 부를 때 삭제되지 않도록 함
-
+        SetLoadStatus(true);
         StartCoroutine(GetExhibitRequest());
+    }
+
+    void Update()
+    {
+        float percentage = requiredCount > 0 ? (float)loadedCount / requiredCount : 0f;
+        progressBar.localScale = new Vector3(percentage, 1f, 1f);
+
+        if (loadedCount == requiredCount)
+        {
+            exhibitListController.SetShowAll();
+            exhibitListController.Show();
+            firstPersonController.GetComponent<FirstPersonMovement>().enabled = true;
+            firstPersonController.GetComponent<Jump>().enabled = true;
+            firstPersonController.GetComponent<Crouch>().enabled = true;
+            firstPersonController.GetComponent<MenuController>().enabled = true;
+            firstPersonController.GetComponent<APIBlankSender>().enabled = true;
+            firstPersonController.GetComponentInChildren<FirstPersonLook>().enabled = true;
+            firstPersonController.GetComponentInChildren<Zoom>().enabled = true;
+            firstPersonController.GetComponentInChildren<CollisionDetector>().enabled = true;
+            gameObject.SetActive(false);
+        }
+    }
+
+    void SetLoadStatus(bool state)
+    {
+        loadStatus = state;
+        restartButton.gameObject.SetActive(!state);
+        exitButton.gameObject.SetActive(!state);
+    }
+
+    public void RestartDownload()
+    {
+        log.text = "";
+        SetLoadStatus(true);
+    }
+
+    public void ExitToLoginPage()
+    {
+        UnityWebRequest.ClearCookieCache();
+        SceneManager.LoadScene("LoginScene");
     }
 
     string GetFilePath(string url)
@@ -70,95 +117,108 @@ public class ModelLoader : MonoBehaviour
     IEnumerator GetModelRequest(Exhibit exhibit)
     {
         string url = "http://localhost:8000/media/" + exhibit.mesh;
-        using (UnityWebRequest req = UnityWebRequest.Get(url))
+        while (true)
         {
+            UnityWebRequest req = UnityWebRequest.Get(url);
             req.downloadHandler = new DownloadHandlerFile(GetFilePath(url));
-            isDownload = true;
-
-            StartCoroutine(ModelDownloadProgress(req, exhibit.mesh));
             yield return req.SendWebRequest();
-
-            isDownload = false;
 
             if (req.isNetworkError || req.isHttpError)
             {
-                Debug.Log(req.error);
-                // Delete wrongly cached file
+                log.text = req.error;
                 File.Delete(GetFilePath(url));
+                SetLoadStatus(false);
+                while (!loadStatus)
+                {
+                    yield return null;
+                }
             }
             else
             {
-                Debug.Log($"Downloaded file : {url}");
-                // Save the model
+                log.text = $"Downloaded file : {url}";
                 LoadModel(exhibit);
+                break;
             }
         }
+
     }
 
     IEnumerator GetExhibitRequest()
     {
-        using (UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/exhibit/"))
+        while (true)
         {
+            UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/exhibit/");
             yield return req.SendWebRequest();
 
             if (req.isNetworkError || req.isHttpError)
             {
-                Debug.Log(req.error);
+                log.text = req.error;
+                SetLoadStatus(false);
+                while (!loadStatus)
+                {
+                    yield return null;
+                }
             }
             else
             {
                 ExhibitList exhibitList = JsonUtility.FromJson<ExhibitList>("{\"exhibits\":" + req.downloadHandler.text + "}");
-
-                maxExhibitCounter = exhibitList.exhibits.Length;
-                currLoadedExhibitCounter = 0;
-
+                requiredCount = exhibitList.exhibits.Length;
                 foreach (Exhibit exhibit in exhibitList.exhibits)
                 {
                     string path = GetFilePath(exhibit.mesh);
                     if (File.Exists(path))
                     {
-                        Debug.Log($"Found file locally : {path}");
-                        LoadModel(exhibit);
+                        MD5 md5 = MD5.Create();
+                        StringBuilder hashBuilder = new StringBuilder();
+                        String hash;
+                        using (var file = File.OpenRead(path))
+                        {
+                            foreach (byte b in md5.ComputeHash(file))
+                            {
+                                hashBuilder.Append(b.ToString("x2"));
+                            }
+                            hash = hashBuilder.ToString();
+                        }
+
+                        if (exhibit.hash == hash)
+                        {
+                            log.text = $"Found file locally : {path}";
+                            LoadModel(exhibit);
+                            yield return null;
+                        }
+                        else
+                        {
+                            File.Delete(path);
+                            yield return StartCoroutine(GetModelRequest(exhibit));
+                        }
                     }
                     else
                     {
-                        StartCoroutine(GetModelRequest(exhibit));
+                        yield return StartCoroutine(GetModelRequest(exhibit));
                     }
                 }
-                SceneManager.LoadScene("MainScene");
+                break;
             }
         }
+
     }
 
     void LoadModel(Exhibit exhibit)
     {
         GameObject exhibitObject = Importer.LoadFromFile(GetFilePath(exhibit.mesh));
         ExhibitData data = exhibitObject.AddComponent<ExhibitData>();
-        MeshCollider collider = exhibitObject.AddComponent<MeshCollider>();
+        exhibitObject.AddComponent<MeshCollider>();
 
         exhibitObject.transform.SetParent(wrapper.transform);
         exhibitObject.transform.position = new Vector3(exhibit.posx, exhibit.posy, exhibit.posz);
         exhibitObject.transform.Rotate(0.0f, exhibit.roty, 0.0f);
 
-        data.position_id = exhibit.position_id;
+        data.positionId = exhibit.position_id;
         data.name = exhibit.name;
         data.summary = exhibit.summary;
         data.info = exhibit.info;
 
-        currLoadedExhibitCounter += 1;
-        entireExhibitLoadingMessage = "Entire Loading Progress : " + currLoadedExhibitCounter + " / " + maxExhibitCounter;
-        Console.WriteLine(entireExhibitLoadingMessage);
-        entireLoadingText.text = entireExhibitLoadingMessage;
-    }
-
-    IEnumerator ModelDownloadProgress(UnityWebRequest req, string mesh)
-    {
-        while (isDownload)
-        {
-            modelDownloadMessage = mesh + "Download Progress : " + req.downloadProgress * 100 + "%";
-            fileDownloadText.text = modelDownloadMessage;
-            yield return new WaitForSeconds(0.1f);
-        }
-        fileDownloadText.text = null;
+        exhibitListController.GetExhibit(exhibitObject);
+        loadedCount += 1;
     }
 }
