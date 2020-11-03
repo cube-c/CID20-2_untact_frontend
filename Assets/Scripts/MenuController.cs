@@ -47,37 +47,21 @@ public class MenuController : MonoBehaviour
 
     IEnumerator GetInfoRequest()
     {
-        UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
-        yield return getToken.SendWebRequest();
-        if (getToken.isNetworkError || getToken.isHttpError)
+        using (UnityWebRequest getInfo = UnityWebRequest.Get("http://localhost:8000/api/myInfo/"))
         {
-            Debug.Log(getToken.error);
-            yield break;
-        }
+            yield return getInfo.SendWebRequest();
 
-        // get the csrf cookie
-        string SetCookie = getToken.GetResponseHeader("set-cookie");
-        Regex rxCookie = new Regex("csrftoken=(?<csrf_token>.{64});");
-        MatchCollection cookieMatches = rxCookie.Matches(SetCookie);
-        string csrfCookie = cookieMatches[0].Groups["csrf_token"].Value;
-
-        UnityWebRequest getInfo = UnityWebRequest.Get("http://localhost:8000/api/myInfo/");
-
-        getInfo.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        getInfo.SetRequestHeader("X-CSRFTOKEN", csrfCookie);
-
-        yield return getInfo.SendWebRequest();
-
-        if (getInfo.isNetworkError || getInfo.isHttpError)
-        {
-            Debug.Log(getInfo.error);
-            yield break;
-        }
-        else
-        {
-            myInfo = JsonUtility.FromJson<MyInfo>(getInfo.downloadHandler.text);
-            textMyID.text = myInfo.user_name;
-            textMyTitle.text = myInfo.user_title;
+            if (getInfo.isNetworkError || getInfo.isHttpError)
+            {
+                Debug.Log(getInfo.error);
+                yield break;
+            }
+            else
+            {
+                myInfo = JsonUtility.FromJson<MyInfo>(getInfo.downloadHandler.text);
+                textMyID.text = myInfo.user_name;
+                textMyTitle.text = myInfo.user_title;
+            }
         }
     }
 
