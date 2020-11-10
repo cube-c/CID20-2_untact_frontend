@@ -7,16 +7,5 @@ public class ExhibitData : MonoBehaviour
     public string summary;
     public string info;
     public string positionId;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // used in CollisionDetector.cs, ExhibitListController.cs, ModelLoader.cs
 }

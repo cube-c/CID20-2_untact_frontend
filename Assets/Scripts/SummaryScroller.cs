@@ -7,7 +7,7 @@ public class SummaryScroller : MonoBehaviour
 {
     public TextMeshProUGUI textSummary;
     public float scrollSpeed = 75;
-    public const float summaryColumnWidth = 500;
+    public const float summaryColumnWidth = 540;
     public const float padding = 10;
 
     RectTransform textRectTransform;
@@ -51,10 +51,10 @@ public class SummaryScroller : MonoBehaviour
         cloneRectTransform.pivot = new Vector2(0, 0.5f);
         cloneRectTransform.anchoredPosition = new Vector3(padding, 0, 0);
 
-        StartCoroutine(scrollText());
+        StartCoroutine(ScrollText());
     }
 
-    IEnumerator scrollText()
+    IEnumerator ScrollText()
     {
         float width = textSummary.preferredWidth;
         Vector3 startPosition = textRectTransform.localPosition;
