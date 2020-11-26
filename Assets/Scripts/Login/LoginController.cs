@@ -124,7 +124,12 @@ public class LoginController : MonoBehaviour
         loginButton.enabled = true;
         if (doLogin.isNetworkError) loginNotice.text = "Unable to connect to the server";
         else if (doLogin.isHttpError) loginNotice.text = "Username or password is incorrect";
-        else SceneManager.LoadScene("MainScene");
+        else
+        {
+            GameObject go = GameObject.Find("VideoChatManager");
+            VideoChatManager vcm = go.GetComponent<VideoChatManager>();
+            vcm.LoadMainsceneAfterLogin(currentUsername); // Loading을 VCM 에서 함. 이 때 유저 개인 채널 개설을 위한 id 정보 넘김.
+        }
     }
 
     IEnumerator SignupRequest()
