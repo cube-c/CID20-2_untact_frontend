@@ -18,7 +18,7 @@ public class VideoChatManager : MonoBehaviour
 #if (UNITY_2018_3_OR_NEWER && UNITY_ANDROID)
     private ArrayList permissionList = new ArrayList();
 #endif
-    static TestHelloUnityVideo app = null;
+    static UntactVideoChat app = null;
 
     private string LoginSceneName = "LoginScene";
 
@@ -95,7 +95,7 @@ public class VideoChatManager : MonoBehaviour
         // create app if nonexistent
         if (ReferenceEquals(app, null))
         {
-            app = new TestHelloUnityVideo(); // create app
+            app = new UntactVideoChat(); // create app
             app.loadEngine(AppID); // load engine
         }
 

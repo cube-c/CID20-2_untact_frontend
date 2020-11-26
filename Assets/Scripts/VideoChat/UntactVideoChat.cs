@@ -102,27 +102,18 @@ public class UntactVideoChat : MonoBehaviour
     // set video transform delegate for statically created GameObject
     public void onSceneHelloVideoLoaded()
     {
-        // Attach the SDK Script VideoSurface for video rendering
-        GameObject quad = GameObject.Find("Quad");
-        if (ReferenceEquals(quad, null))
+        for (int i = 1; i <= 3; i++)
         {
-            Debug.Log("BBBB: failed to find Quad");
-            return;
-        }
-        else
-        {
-            quad.AddComponent<VideoSurface>();
-        }
-
-        GameObject cube = GameObject.Find("Cube");
-        if (ReferenceEquals(cube, null))
-        {
-            Debug.Log("BBBB: failed to find Cube");
-            return;
-        }
-        else
-        {
-            cube.AddComponent<VideoSurface>();
+            GameObject video = GameObject.Find("Video" + i);
+            if (ReferenceEquals(video, null))
+            {
+                Debug.Log("BBBB: failed to find Video " + i);
+                return;
+            }
+            else
+            {
+                video.AddComponent<VideoSurface>();
+            }
         }
     }
 
