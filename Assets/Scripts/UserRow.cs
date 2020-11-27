@@ -15,7 +15,12 @@ public class UserRow : MonoBehaviour
     public Button button;
     public Text buttonText;
 
-    // TODO: add variables to implement video call
+    public WebSocketController webSocketController;
+
+    void Awake()
+    {
+        webSocketController = GameObject.Find("WebSocketController").GetComponent<WebSocketController>();
+    }
 
     public void FillText()
     {
@@ -27,7 +32,7 @@ public class UserRow : MonoBehaviour
     {
         buttonImage.color = new Color(50f / 255, 200f / 255, 50f / 255, 1);
         button.enabled = true;
-        buttonText.text = "연결";
+        buttonText.text = "초대";
     }
     /*
     public void SetOffline()
@@ -42,5 +47,10 @@ public class UserRow : MonoBehaviour
         buttonImage.color = new Color(200f / 255, 200f / 255, 50f / 255, 1);
         button.enabled = false;
         buttonText.text = "";
+    }
+
+    public void Invite()
+    {
+        webSocketController.Invite(userID);
     }
 }

@@ -15,6 +15,7 @@ public class MyInfo
 {
     public string user_name;
     public string user_title;
+    public string cookie;
 }
 
 
@@ -37,7 +38,7 @@ public class MenuController : MonoBehaviour
     public Text textMyTitle;
 
     public GameObject userListController;
-
+    public GameObject webSocketController;
 
     void Start()
     {
@@ -61,6 +62,12 @@ public class MenuController : MonoBehaviour
                 myInfo = JsonUtility.FromJson<MyInfo>(getInfo.downloadHandler.text);
                 textMyID.text = myInfo.user_name;
                 textMyTitle.text = myInfo.user_title;
+                if (myInfo.user_title == "")
+                {
+                    textMyTitle.text = "없음";
+                }
+                PlayerPrefs.SetString("Cookie", myInfo.cookie);
+                webSocketController.SetActive(true);
             }
         }
     }
@@ -68,6 +75,7 @@ public class MenuController : MonoBehaviour
     public void Logout()
     {
         menu.SetActive(false);
+        PlayerPrefs.DeleteKey("Cookie");
         StartCoroutine(LogoutRequest());
     }
 

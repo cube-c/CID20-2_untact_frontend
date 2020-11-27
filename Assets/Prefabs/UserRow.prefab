@@ -356,7 +356,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4064290483672431004}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2721644447951363177}
+        m_TargetAssemblyTypeName: UserRow, Assembly-CSharp
+        m_MethodName: Invite
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &4064290483944040427
 GameObject:
   m_ObjectHideFlags: 0
@@ -455,6 +467,7 @@ MonoBehaviour:
   buttonImage: {fileID: 4064290483672431004}
   button: {fileID: 4064290483672431005}
   buttonText: {fileID: 4064290483082591559}
+  webSocketController: {fileID: 0}
 --- !u!1 &4064290483966268038
 GameObject:
   m_ObjectHideFlags: 0
