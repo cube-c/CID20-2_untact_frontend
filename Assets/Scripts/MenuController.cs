@@ -40,6 +40,10 @@ public class MenuController : MonoBehaviour
     public GameObject userListController;
     public GameObject webSocketController;
 
+    public Image invitePanel;
+    public ScrollRect inviteScrollRect;
+    public Scrollbar inviteScrollbar;
+
     void Start()
     {
         SwitchDND();
@@ -225,6 +229,8 @@ public class MenuController : MonoBehaviour
                 menu.SetActive(true);
                 userWindow.SetActive(userListOn);
                 exhibitWindow.SetActive(exhibitListOn);
+                invitePanel.color = new Color(50f / 255, 50f / 255, 50f / 255, 50f / 255);
+                inviteScrollRect.vertical = true;
                 Cursor.lockState = CursorLockMode.None;
             }
             else
@@ -238,6 +244,9 @@ public class MenuController : MonoBehaviour
                 menu.SetActive(false);
                 userWindow.SetActive(false);
                 exhibitWindow.SetActive(false);
+                invitePanel.color = new Color(50f / 255, 50f / 255, 50f / 255, 0);
+                inviteScrollbar.value = 1;
+                inviteScrollRect.vertical = false;
                 Cursor.lockState = CursorLockMode.Locked;
             }
         }
