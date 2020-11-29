@@ -2,15 +2,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using NativeWebSocket;
 
 public class WebSocketController : MonoBehaviour
 {
     WebSocket websocket;
+    public Text debugText;
 
     async void Start()
     {
         Dictionary<String, String> headers = new Dictionary<string, string>();
+        Debug.Log(PlayerPrefs.GetString("Cookie"));
         headers.Add("Cookie", PlayerPrefs.GetString("Cookie"));
         websocket = new WebSocket("ws://localhost:8000/ws/message/", headers);
 
@@ -34,10 +37,8 @@ public class WebSocketController : MonoBehaviour
             // Reading a plain text message
             var message = System.Text.Encoding.UTF8.GetString(bytes);
             Debug.Log("Received OnMessage (" + bytes.Length + " bytes) " + message);
+            debugText.text += message + "\n";
         };
-
-        // Keep sending messages at every 0.3s
-        //InvokeRepeating("SendWebSocketMessage", 0.0f, 0.3f);
 
         await websocket.Connect();
     }
