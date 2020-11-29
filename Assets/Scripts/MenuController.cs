@@ -24,14 +24,18 @@ public class MenuController : MonoBehaviour
     public GameObject menu;
     public Button buttonUser;
     public Button buttonExhibit;
+    public Button buttonInvite;
     public Toggle toggleDND;
     public GameObject userWindow;
     public Image userWindowBar;
     public GameObject exhibitWindow;
     public Image exhibitWindowBar;
+    public GameObject inviteWindow;
+    public Image inviteWindowBar;
     public bool menuOn = false;
     public bool userListOn = false;
     public bool exhibitListOn = false;
+    public bool inviteListOn = false;
 
     public MyInfo myInfo;
     public Text textMyID;
@@ -168,6 +172,7 @@ public class MenuController : MonoBehaviour
             userWindowBar.color = new Color(150f / 255, 150f / 255, 150f / 255, 100f / 255);
             userWindow.transform.SetAsLastSibling();
             exhibitWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
+            inviteWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
             cb.normalColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
             cb.selectedColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
             cb.highlightedColor = new Color(180f / 255, 180f / 255, 180f / 255, 1);
@@ -197,6 +202,7 @@ public class MenuController : MonoBehaviour
             exhibitWindowBar.color = new Color(150f / 255, 150f / 255, 150f / 255, 100f / 255);
             exhibitWindow.transform.SetAsLastSibling();
             userWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
+            inviteWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
             cb.normalColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
             cb.selectedColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
             cb.highlightedColor = new Color(180f / 255, 180f / 255, 180f / 255, 1);
@@ -208,6 +214,35 @@ public class MenuController : MonoBehaviour
             cb.selectedColor = Color.white;
             cb.highlightedColor = new Color(220f / 255, 220f / 255, 220f / 255, 1);
             buttonExhibit.colors = cb;
+        }
+
+        EventSystem.current.SetSelectedGameObject(null);
+    }
+
+    public void InviteList()
+    {
+        inviteListOn = !inviteListOn;
+        inviteWindow.SetActive(inviteListOn);
+
+        ColorBlock cb = buttonInvite.colors;
+
+        if (inviteListOn)
+        {
+            inviteWindowBar.color = new Color(150f / 255, 150f / 255, 150f / 255, 100f / 255);
+            inviteWindow.transform.SetAsLastSibling();
+            userWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
+            exhibitWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
+            cb.normalColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
+            cb.selectedColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
+            cb.highlightedColor = new Color(180f / 255, 180f / 255, 180f / 255, 1);
+            buttonInvite.colors = cb;
+        }
+        else
+        {
+            cb.normalColor = Color.white;
+            cb.selectedColor = Color.white;
+            cb.highlightedColor = new Color(220f / 255, 220f / 255, 220f / 255, 1);
+            buttonInvite.colors = cb;
         }
 
         EventSystem.current.SetSelectedGameObject(null);
@@ -229,6 +264,7 @@ public class MenuController : MonoBehaviour
                 menu.SetActive(true);
                 userWindow.SetActive(userListOn);
                 exhibitWindow.SetActive(exhibitListOn);
+                inviteWindow.SetActive(inviteListOn);
                 invitePanel.color = new Color(50f / 255, 50f / 255, 50f / 255, 50f / 255);
                 inviteScrollRect.vertical = true;
                 Cursor.lockState = CursorLockMode.None;
@@ -244,6 +280,7 @@ public class MenuController : MonoBehaviour
                 menu.SetActive(false);
                 userWindow.SetActive(false);
                 exhibitWindow.SetActive(false);
+                inviteWindow.SetActive(false);
                 invitePanel.color = new Color(50f / 255, 50f / 255, 50f / 255, 0);
                 inviteScrollbar.value = 1;
                 inviteScrollRect.vertical = false;
