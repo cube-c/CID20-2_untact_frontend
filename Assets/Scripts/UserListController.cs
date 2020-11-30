@@ -33,7 +33,7 @@ public class UserListController : MonoBehaviour
 {
     public GameObject content;
     public Scrollbar scrollbar;
-    public Image handleImage;
+    public ScrollRect scrollRect;
 
     public GameObject userRowPrefab;
 
@@ -218,11 +218,11 @@ public class UserListController : MonoBehaviour
         scrollbar.numberOfSteps = userRowsShow.Count + 1 - numberOfRowsInWindow;
         if (scrollbar.numberOfSteps <= 1)
         {
-            handleImage.color = new Color(1, 1, 1, 0);
+            scrollRect.vertical = false;
         }
         else
         {
-            handleImage.color = new Color(1, 1, 1, 200f / 255);
+            scrollRect.vertical = true;
         }
 
         float posy = 0;

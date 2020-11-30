@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SentInviteRow : MonoBehaviour
+public class ReceivedInviteRow : MonoBehaviour
 {
     public string userID;
     public string userTitle;
@@ -12,7 +12,7 @@ public class SentInviteRow : MonoBehaviour
     public Text userTitleText;
 
     public WebSocketController webSocketController;
-    
+
     void Awake()
     {
         webSocketController = GameObject.Find("WebSocketController").GetComponent<WebSocketController>();
@@ -24,8 +24,13 @@ public class SentInviteRow : MonoBehaviour
         userTitleText.text = userTitle;
     }
 
-    public void Cancel()
+    public void Accept()
     {
-        webSocketController.Cancel(userID);
+        webSocketController.Accept(userID);
+    }
+
+    public void Reject()
+    {
+        webSocketController.Reject(userID);
     }
 }

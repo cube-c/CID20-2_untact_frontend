@@ -8336,12 +8336,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 74145c87dbf34c94b8f200b9d86d4a7f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ReceivedInviteScrollbar: {fileID: 1921465375}
-  SentInviteScrollbar: {fileID: 890732190}
-  ReceivedInviteRowPrefab: {fileID: 0}
-  SentInviteRowPrefab: {fileID: 0}
-  ReceivedInviteRows: []
-  SentInviteRows: []
+  receivedInviteContent: {fileID: 2040308457}
+  sentInviteContent: {fileID: 149086741}
+  receivedInviteScrollbar: {fileID: 1921465375}
+  sentInviteScrollbar: {fileID: 890732190}
+  receivedInviteScrollRect: {fileID: 1878255608}
+  sentInviteScrollRect: {fileID: 1667028465}
+  receivedInviteRowPrefab: {fileID: 3505970905404934772, guid: 5e73e5cdb42b8144caf5e1e1863aec97, type: 3}
+  sentInviteRowPrefab: {fileID: 4064290483944040427, guid: b5eadebfac172f04c9d4521b661aeae4, type: 3}
+  receivedInviteRows: []
+  sentInviteRows: []
 --- !u!4 &1538094273
 Transform:
   m_ObjectHideFlags: 0
@@ -8815,7 +8819,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 63778704}
   scrollbar: {fileID: 1058496095}
-  handleImage: {fileID: 1935504562}
+  scrollRect: {fileID: 869940557}
   userRowPrefab: {fileID: 4064290483944040427, guid: 9942652b506a1f545a9777f0de47f1f4, type: 3}
   textID: {fileID: 572656809}
   textTitle: {fileID: 810907856}
@@ -10556,7 +10560,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   content: {fileID: 771231720}
   scrollbar: {fileID: 1415735255}
-  handleImage: {fileID: 804652191}
+  scrollRect: {fileID: 1158070224}
   exhibitRowPrefab: {fileID: 1835294541542109778, guid: 4e348263a6c196048b34fde6e4ade07c, type: 3}
   textPosition: {fileID: 15991267}
   textName: {fileID: 1111070260}

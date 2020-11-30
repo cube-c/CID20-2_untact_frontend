@@ -357,9 +357,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: UserRow, Assembly-CSharp
-        m_MethodName: 
+      - m_Target: {fileID: 606379015958830294}
+        m_TargetAssemblyTypeName: SentInviteRow, Assembly-CSharp
+        m_MethodName: Cancel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

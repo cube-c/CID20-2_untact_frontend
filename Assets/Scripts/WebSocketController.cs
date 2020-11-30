@@ -38,6 +38,7 @@ public class WebSocketController : MonoBehaviour
             var message = System.Text.Encoding.UTF8.GetString(bytes);
             Debug.Log("Received OnMessage (" + bytes.Length + " bytes) " + message);
             debugText.text += message + "\n";
+            debugText.text += OnMessageType(message) + "\n";
         };
 
         await websocket.Connect();
@@ -50,11 +51,18 @@ public class WebSocketController : MonoBehaviour
 #endif
     }
 
+    public string OnMessageType(string jsonMessage)
+    {
+        string typeString = jsonMessage.Split(',')[0];
+        char[] trimChars = { ' ', '\"' };
+        return typeString.Split(':')[1].Trim(trimChars);
+    }
+
     async public void Invite(string userID)
     {
         if (websocket.State == WebSocketState.Open)
         {
-            await websocket.SendText("{\"type\":\"invite\",\"username\":\""+userID+"\"}");
+            await websocket.SendText("{\"type\":\"invite\",\"username\":\"" + userID + "\"}");
         }
     }
 
@@ -71,6 +79,14 @@ public class WebSocketController : MonoBehaviour
         if (websocket.State == WebSocketState.Open)
         {
             await websocket.SendText("{\"type\":\"reject\",\"username\":\"" + userID + "\"}");
+        }
+    }
+
+    async public void Cancel(string userID)
+    {
+        if (websocket.State == WebSocketState.Open)
+        {
+            await websocket.SendText("{\"type\":\"cancel\",\"username\":\"" + userID + "\"}");
         }
     }
 
