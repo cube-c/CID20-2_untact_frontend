@@ -11,16 +11,11 @@ using UnityEngine.EventSystems;
 
 
 [Serializable]
-public class Invite
+public class Invitation
 {
     public string name;
     public string title;
-}
-
-[Serializable]
-public class InviteList
-{
-    public Invite[] invites;
+    public int timestamp;
 }
 
 public class InviteListController : MonoBehaviour
@@ -36,6 +31,8 @@ public class InviteListController : MonoBehaviour
 
     public GameObject receivedInviteRowPrefab;
     public GameObject sentInviteRowPrefab;
+
+    public MenuController menuController;
 
     public const float receivedInviteRowHeight = 125;
     public const int numberOfReceivedInviteRowsInWindow = 4;
@@ -70,25 +67,25 @@ public class InviteListController : MonoBehaviour
         sentInviteRows = new List<GameObject>();
     }
 
-    public void GetReceivedInvite(Invite invite)
+    public void GetReceivedInvite(Invitation invitation)
     {
         GameObject receivedInviteRow = Instantiate(receivedInviteRowPrefab);
         ReceivedInviteRow receivedInviteRowComponent = receivedInviteRow.GetComponent<ReceivedInviteRow>();
 
-        receivedInviteRowComponent.userID = invite.name;
-        receivedInviteRowComponent.userTitle = invite.title;
+        receivedInviteRowComponent.userID = invitation.name;
+        receivedInviteRowComponent.userTitle = invitation.title;
         receivedInviteRowComponent.FillText();
 
         receivedInviteRows.Add(receivedInviteRow);
     }
 
-    public void GetSentInvite(Invite invite)
+    public void GetSentInvite(Invitation invitation)
     {
         GameObject sentInviteRow = Instantiate(sentInviteRowPrefab);
         SentInviteRow sentInviteRowComponent = sentInviteRow.GetComponent<SentInviteRow>();
 
-        sentInviteRowComponent.userID = invite.name;
-        sentInviteRowComponent.userTitle = invite.title;
+        sentInviteRowComponent.userID = invitation.name;
+        sentInviteRowComponent.userTitle = invitation.title;
         sentInviteRowComponent.FillText();
 
         sentInviteRows.Add(sentInviteRow);
@@ -96,7 +93,30 @@ public class InviteListController : MonoBehaviour
 
     public void ShowReceivedInvite()
     {
-        // 1. 이거도 채우기 2. WebSocket 메세지 type 분류하는거 만들기 3. inviteRow 생성 처리
+        RectTransform rt = receivedInviteContent.GetComponent<RectTransform>();
+        rt.sizeDelta = new Vector2(rt.sizeDelta.x, receivedInviteRows.Count * receivedInviteRowHeight);
+
+        receivedInviteScrollbar.numberOfSteps = receivedInviteRows.Count + 1 - numberOfReceivedInviteRowsInWindow;
+        if (menuController.menuOn)
+        {
+            if (receivedInviteScrollbar.numberOfSteps <= 1)
+            {
+                receivedInviteScrollRect.vertical = false;
+            }
+            else
+            {
+                receivedInviteScrollRect.vertical = true;
+            }
+        }
+
+        float posy = 0;
+        foreach (GameObject receivedInviteRow in receivedInviteRows)
+        {
+            receivedInviteRow.SetActive(true);
+            receivedInviteRow.transform.SetParent(receivedInviteContent.transform);
+            receivedInviteRow.GetComponent<RectTransform>().localPosition = new Vector3(0, posy, 0);
+            posy -= receivedInviteRowHeight;
+        }
     }
 
     public void ShowSentInvite()

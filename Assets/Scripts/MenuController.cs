@@ -266,7 +266,10 @@ public class MenuController : MonoBehaviour
                 exhibitWindow.SetActive(exhibitListOn);
                 inviteWindow.SetActive(inviteListOn);
                 invitePanel.color = new Color(50f / 255, 50f / 255, 50f / 255, 50f / 255);
-                inviteScrollRect.vertical = true;
+                if (inviteScrollbar.numberOfSteps > 1)
+                {
+                    inviteScrollRect.vertical = true;
+                }
                 Cursor.lockState = CursorLockMode.None;
             }
             else

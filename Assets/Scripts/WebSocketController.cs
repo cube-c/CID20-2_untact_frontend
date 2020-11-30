@@ -5,15 +5,22 @@ using UnityEngine;
 using UnityEngine.UI;
 using NativeWebSocket;
 
+[Serializable]
+public class InvitationsState
+{
+    public string type;
+    public Invitation[] invitations;
+}
+
 public class WebSocketController : MonoBehaviour
 {
     WebSocket websocket;
     public Text debugText;
+    public InviteListController inviteListController;
 
     async void Start()
     {
         Dictionary<String, String> headers = new Dictionary<string, string>();
-        Debug.Log(PlayerPrefs.GetString("Cookie"));
         headers.Add("Cookie", PlayerPrefs.GetString("Cookie"));
         websocket = new WebSocket("ws://localhost:8000/ws/message/", headers);
 
@@ -36,9 +43,32 @@ public class WebSocketController : MonoBehaviour
         {
             // Reading a plain text message
             var message = System.Text.Encoding.UTF8.GetString(bytes);
-            Debug.Log("Received OnMessage (" + bytes.Length + " bytes) " + message);
             debugText.text += message + "\n";
-            debugText.text += OnMessageType(message) + "\n";
+
+            switch (OnMessageType(message))
+            {
+                case "sent_invitations_state":
+                    InvitationsState sentInvitationsState = JsonUtility.FromJson<InvitationsState>(message);
+                    inviteListController.ResetSentInvite();
+                    foreach (Invitation invitation in sentInvitationsState.invitations)
+                    {
+                        inviteListController.GetSentInvite(invitation);
+                    }
+                    inviteListController.ShowSentInvite();
+                    break;
+                case "received_invitations_state":
+                    Debug.Log("received_invitations_state");
+                    InvitationsState receivedInvitationsState = JsonUtility.FromJson<InvitationsState>(message);
+                    inviteListController.ResetReceivedInvite();
+                    foreach (Invitation invitation in receivedInvitationsState.invitations)
+                    {
+                        inviteListController.GetReceivedInvite(invitation);
+                    }
+                    inviteListController.ShowReceivedInvite();
+                    break;
+                default:
+                    break;
+            }
         };
 
         await websocket.Connect();
