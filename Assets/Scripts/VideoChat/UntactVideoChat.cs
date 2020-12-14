@@ -121,8 +121,8 @@ public class UntactVideoChat : MonoBehaviour
     private void onJoinChannelSuccess(string channelName, uint uid, int elapsed)
     {
         Debug.Log("JoinChannelSuccessHandler: uid = " + uid);
-        GameObject textVersionGameObject = GameObject.Find("VersionText");
-        textVersionGameObject.GetComponent<Text>().text = "SDK Version : " + getSdkVersion();
+        // GameObject textVersionGameObject = GameObject.Find("VersionText");
+        // textVersionGameObject.GetComponent<Text>().text = "SDK Version : " + getSdkVersion();
     }
 
     // When a remote user joined, this delegate will be called. Typically
@@ -140,7 +140,8 @@ public class UntactVideoChat : MonoBehaviour
         }
 
         // create a GameObject and assign to this new user
-        VideoSurface videoSurface = makeImageSurface(uid.ToString());
+        go = GameObject.Find("video2");
+        VideoSurface videoSurface = go.GetComponent<VideoSurface>();
         if (!ReferenceEquals(videoSurface, null))
         {
             // configure videoSurface

@@ -90,7 +90,8 @@ public class VideoChatManager : MonoBehaviour
 
     public void LoadMainsceneAfterLogin(string userid)
     {
-        userID = userid;
+        // userID = userid; // 기본 서버 : user의 id를 이름으로 가지는 video chat server
+        userID = "temp"; // 테스트용 : 임시 채널명에 들어감
 
         // create app if nonexistent
         if (ReferenceEquals(app, null))
