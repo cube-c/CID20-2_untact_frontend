@@ -13,8 +13,9 @@ using UnityEngine.EventSystems;
 [Serializable]
 public class MyInfo
 {
-    public string user_name;
-    public string user_title;
+    public int uid;
+    public string name;
+    public string title;
     public string cookie;
 }
 
@@ -70,9 +71,9 @@ public class MenuController : MonoBehaviour
             else
             {
                 myInfo = JsonUtility.FromJson<MyInfo>(getInfo.downloadHandler.text);
-                textMyID.text = myInfo.user_name;
-                textMyTitle.text = myInfo.user_title;
-                if (myInfo.user_title == "")
+                textMyID.text = myInfo.name;
+                textMyTitle.text = myInfo.title;
+                if (myInfo.title == "")
                 {
                     textMyTitle.text = "없음";
                 }
