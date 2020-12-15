@@ -12,6 +12,12 @@ public class InvitationsState
     public Invitation[] invitations;
 }
 
+[Serializable]
+public class ChannelIdState
+{
+    public string channel_id;
+}
+
 public class WebSocketController : MonoBehaviour
 {
     private string WEBSOCKET_ADDRESS = "ws://untact-museum.herokuapp.com/";
@@ -19,6 +25,7 @@ public class WebSocketController : MonoBehaviour
     WebSocket websocket;
     public Text debugText;
     public InviteListController inviteListController;
+    public VideoController videoController;
 
     async void Start()
     {
@@ -67,6 +74,11 @@ public class WebSocketController : MonoBehaviour
                         inviteListController.GetReceivedInvite(invitation);
                     }
                     inviteListController.ShowReceivedInvite();
+                    break;
+                case "channel_id_state":
+                    Debug.Log("channel_id_state");
+                    ChannelIdState channelIdState = JsonUtility.FromJson<ChannelIdState>(message);
+                    videoController.SetChannelID(channelIdState.channel_id);
                     break;
                 default:
                     break;
