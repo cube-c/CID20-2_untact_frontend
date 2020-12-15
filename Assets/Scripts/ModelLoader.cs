@@ -38,7 +38,6 @@ public class ExhibitList
 public class ModelLoader : MonoBehaviour
 {
     private string SITE_ADDRESS = "http://untact-museum.herokuapp.com/";
-    private string MEDIA_ADDRESS = "http://untact-museum.s3.amazonaws.com/";
 
     public GameObject firstPersonController;
     public ExhibitListController exhibitListController;
@@ -66,11 +65,7 @@ public class ModelLoader : MonoBehaviour
             name = "Exhibit"
         };
         SetLoadStatus(true);
-
-        ////// TEMPORARY
-        //StartCoroutine(GetExhibitRequest());
-        requiredCount = 0;
-        //////
+        StartCoroutine(GetExhibitRequest());
     }
 
     void Update()
@@ -115,14 +110,14 @@ public class ModelLoader : MonoBehaviour
     string GetFilePath(string url)
     {
         string[] pieces = url.Split('/');
-        string filename = pieces[pieces.Length - 1];
+        string filename = pieces[pieces.Length - 1].Split('?')[0];
 
         return $"{filePath}{filename}";
     }
 
     IEnumerator GetModelRequest(Exhibit exhibit)
     {
-        string url = MEDIA_ADDRESS + "media/" + exhibit.mesh;
+        string url = exhibit.mesh;
         while (true)
         {
             UnityWebRequest req = UnityWebRequest.Get(url);
@@ -141,7 +136,7 @@ public class ModelLoader : MonoBehaviour
             }
             else
             {
-                log.text = $"Downloaded file : {url}";
+                log.text = $"Downloaded file : {url.Split('?')[0]}";
                 LoadModel(exhibit);
                 break;
             }
