@@ -11676,7 +11676,6 @@ GameObject:
   - component: {fileID: 114497868094198736}
   - component: {fileID: 114762042230853626}
   - component: {fileID: 1773623225661365}
-  - component: {fileID: 1773623225661366}
   m_Layer: 0
   m_Name: FirstPersonController
   m_TagString: Untagged
@@ -11722,18 +11721,6 @@ MonoBehaviour:
   invitePanel: {fileID: 1878255609}
   inviteScrollRect: {fileID: 1878255608}
   inviteScrollbar: {fileID: 1921465375}
---- !u!114 &1773623225661366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1773623225661364}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4311594f37ad45e4e8286ffc4aaef402, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!4 &4207293525994524
 Transform:
   m_ObjectHideFlags: 0
