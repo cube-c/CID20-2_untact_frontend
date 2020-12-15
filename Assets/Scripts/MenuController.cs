@@ -21,6 +21,8 @@ public class MyInfo
 
 public class MenuController : MonoBehaviour
 {
+    private string SITE_ADDRESS = "http://untact-museum.herokuapp.com/";
+
     public GameObject menu;
     public Button buttonUser;
     public Button buttonExhibit;
@@ -56,7 +58,7 @@ public class MenuController : MonoBehaviour
 
     IEnumerator GetInfoRequest()
     {
-        using (UnityWebRequest getInfo = UnityWebRequest.Get("http://localhost:8000/api/myInfo/"))
+        using (UnityWebRequest getInfo = UnityWebRequest.Get(SITE_ADDRESS + "api/myInfo/"))
         {
             yield return getInfo.SendWebRequest();
 
@@ -89,7 +91,7 @@ public class MenuController : MonoBehaviour
 
     IEnumerator LogoutRequest()
     {
-        UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
+        UnityWebRequest getToken = UnityWebRequest.Get(SITE_ADDRESS + "api/token/");
         yield return getToken.SendWebRequest();
         if (getToken.isNetworkError || getToken.isHttpError)
         {
@@ -103,7 +105,7 @@ public class MenuController : MonoBehaviour
         MatchCollection cookieMatches = rxCookie.Matches(SetCookie);
         string csrfCookie = cookieMatches[0].Groups["csrf_token"].Value;
 
-        UnityWebRequest doLogout = UnityWebRequest.Post("http://localhost:8000/api/logout/", "");
+        UnityWebRequest doLogout = UnityWebRequest.Post(SITE_ADDRESS + "api/logout/", "");
 
         doLogout.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         doLogout.SetRequestHeader("X-CSRFTOKEN", csrfCookie);
@@ -127,7 +129,7 @@ public class MenuController : MonoBehaviour
 
     IEnumerator dndSwitchRequest(bool dndIsOn)
     {
-        UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
+        UnityWebRequest getToken = UnityWebRequest.Get(SITE_ADDRESS + "api/token/");
         yield return getToken.SendWebRequest();
         if (getToken.isNetworkError || getToken.isHttpError)
         {
@@ -144,7 +146,7 @@ public class MenuController : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("dndswitch", dndIsOn.ToString());
 
-        UnityWebRequest dndSwitch = UnityWebRequest.Post("http://localhost:8000/api/dndSwitch/", form);
+        UnityWebRequest dndSwitch = UnityWebRequest.Post(SITE_ADDRESS + "api/dndSwitch/", form);
 
         dndSwitch.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         dndSwitch.SetRequestHeader("X-CSRFTOKEN", csrfCookie);

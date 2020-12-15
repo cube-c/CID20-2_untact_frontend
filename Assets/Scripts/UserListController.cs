@@ -31,6 +31,8 @@ enum UserSortOrder
 
 public class UserListController : MonoBehaviour
 {
+    private string SITE_ADDRESS = "http://untact-museum.herokuapp.com/";
+
     public GameObject content;
     public Scrollbar scrollbar;
     public ScrollRect scrollRect;
@@ -96,7 +98,7 @@ public class UserListController : MonoBehaviour
 
     IEnumerator GetUserRequest()
     {
-        using (UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/userStatus/"))
+        using (UnityWebRequest req = UnityWebRequest.Get(SITE_ADDRESS + "api/userStatus/"))
         {
             yield return req.SendWebRequest();
 

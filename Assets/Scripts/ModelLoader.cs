@@ -37,6 +37,9 @@ public class ExhibitList
 
 public class ModelLoader : MonoBehaviour
 {
+    private string SITE_ADDRESS = "http://untact-museum.herokuapp.com/";
+    private string MEDIA_ADDRESS = "http://untact-museum.s3.amazonaws.com/";
+
     public GameObject firstPersonController;
     public ExhibitListController exhibitListController;
     public RectTransform progressBar;
@@ -63,7 +66,11 @@ public class ModelLoader : MonoBehaviour
             name = "Exhibit"
         };
         SetLoadStatus(true);
-        StartCoroutine(GetExhibitRequest());
+
+        ////// TEMPORARY
+        //StartCoroutine(GetExhibitRequest());
+        requiredCount = 0;
+        //////
     }
 
     void Update()
@@ -115,7 +122,7 @@ public class ModelLoader : MonoBehaviour
 
     IEnumerator GetModelRequest(Exhibit exhibit)
     {
-        string url = "http://localhost:8000/media/" + exhibit.mesh;
+        string url = MEDIA_ADDRESS + "media/" + exhibit.mesh;
         while (true)
         {
             UnityWebRequest req = UnityWebRequest.Get(url);
@@ -146,7 +153,7 @@ public class ModelLoader : MonoBehaviour
     {
         while (true)
         {
-            UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/exhibit/");
+            UnityWebRequest req = UnityWebRequest.Get(SITE_ADDRESS + "api/exhibit/");
             yield return req.SendWebRequest();
 
             if (req.isNetworkError || req.isHttpError)

@@ -14,6 +14,8 @@ public class InvitationsState
 
 public class WebSocketController : MonoBehaviour
 {
+    private string WEBSOCKET_ADDRESS = "ws://untact-museum.herokuapp.com/";
+
     WebSocket websocket;
     public Text debugText;
     public InviteListController inviteListController;
@@ -22,21 +24,21 @@ public class WebSocketController : MonoBehaviour
     {
         Dictionary<String, String> headers = new Dictionary<string, string>();
         headers.Add("Cookie", PlayerPrefs.GetString("Cookie"));
-        websocket = new WebSocket("ws://localhost:8000/ws/message/", headers);
+        websocket = new WebSocket(WEBSOCKET_ADDRESS + "ws/message/", headers);
 
         websocket.OnOpen += () =>
         {
-            Debug.Log("WebSocket Connection open");
+            //Debug.Log("WebSocket Connection open");
         };
 
         websocket.OnError += (e) =>
         {
-            Debug.Log("Error - " + e);
+            //Debug.Log("Error - " + e);
         };
 
         websocket.OnClose += (e) =>
         {
-            Debug.Log("WebSocket Connection closed");
+            //Debug.Log("WebSocket Connection closed");
         };
 
         websocket.OnMessage += (bytes) =>
