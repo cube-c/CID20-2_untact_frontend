@@ -14,6 +14,8 @@ public class VideoApp : MonoBehaviour
     private IRtcEngine mRtcEngine;
     private List<UserVideo> videoUserList;
     private List<GameObject> videoScreenList;
+    private List<Vector3> videoPositionList = new List<Vector3>()
+        { new Vector3(-75, -55), new Vector3(-215, -55), new Vector3(-75, -150), new Vector3(-215, -150), new Vector3(-75, -245), new Vector3(-215, -245), new Vector3(-75, -340)};
     // load agora engine
     public void loadEngine(string appId)
     {
@@ -124,6 +126,9 @@ public class VideoApp : MonoBehaviour
         GameObject go = Instantiate(videoObject);
         go.name = uid.ToString();
 
+        UserVideo uv = new UserVideo(uid, "Temp name", "Temp title");
+        videoUserList.Add(uv);
+
         // create a GameObject and assign to this new user
         VideoSurface videoSurface = go.GetComponent<VideoSurface>();
         if (!ReferenceEquals(videoSurface, null))
@@ -135,6 +140,12 @@ public class VideoApp : MonoBehaviour
             videoSurface.SetGameFps(30);
         }
         videoScreenList.Add(go);
+
+        // 위치 이동
+        for(int i = 0; i < videoUserList.Count ; i++)
+        {
+            videoScreenList[i].transform.position = videoPositionList[i];
+        }
     }
 
     // When remote user is offline, this delegate will be called. Typically
@@ -146,5 +157,7 @@ public class VideoApp : MonoBehaviour
         // this is called in main thread
         GameObject go = GameObject.Find(uid.ToString());
         videoScreenList.Remove(go);
+        // User List 삭제. UserVideo는 uid만 비교해서 동일한지 아닌지 판단함.
+        videoUserList.Remove(new UserVideo(uid));
     }
 }

@@ -8,12 +8,25 @@ public class UserVideo : MonoBehaviour
 {
     public string name;
     public string title;
-    public int uid;
+    public uint uid;
 
-    public UserVideo(int uid, string name, string title )
+    public UserVideo(uint uid, string name, string title )
     {
         this.name = name;
         this.uid = uid;
         this.title = title;
+    }
+
+    public UserVideo(uint uid)
+    {
+        this.name = "temp";
+        this.uid = uid;
+        this.title = "temp";
+    }
+
+    public bool Equals(UserVideo uv)
+    {
+        if (this.uid == uv.uid) return true;
+        else return false;
     }
 }
