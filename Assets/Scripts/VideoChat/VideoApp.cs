@@ -76,7 +76,7 @@ public class VideoApp : MonoBehaviour
         mRtcEngine.DisableVideoObserver();
         // Clear user list of chat
         videoUserList.Clear();
-        videoUserList.Add(currUserVideoInfo);
+        videoScreenList.Clear();
 
     }
 
