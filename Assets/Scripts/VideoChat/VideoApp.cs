@@ -49,12 +49,9 @@ public class VideoApp : MonoBehaviour
 
         // enable video
         mRtcEngine.EnableVideo();
-        // allow camera output callback
-        mRtcEngine.EnableVideoObserver();
-
 
         // join channel
-        mRtcEngine.JoinChannel(channel, null, (uint) currUserVideoInfo.uid);
+        mRtcEngine.JoinChannel(channel, null, currUserVideoInfo.uid);
     }
 
     public string getSdkVersion()
@@ -77,6 +74,7 @@ public class VideoApp : MonoBehaviour
         // Clear user list of chat
         videoUserList.Clear();
         videoScreenList.Clear();
+        videoUserList.Add(currUserVideoInfo);
 
     }
 
@@ -112,6 +110,16 @@ public class VideoApp : MonoBehaviour
     private void onJoinChannelSuccess(string channelName, uint uid, int elapsed)
     {
         Debug.Log("JoinChannelSuccessHandler: uid = " + uid);
+
+        GameObject go = Instantiate(videoObject);
+        go.name = currUserVideoInfo.uid.ToString();
+        videoScreenList.Add(go);
+
+        // allow camera output callback
+        mRtcEngine.EnableVideoObserver();
+
+
+
         // GameObject textVersionGameObject = GameObject.Find("VersionText");
         // textVersionGameObject.GetComponent<Text>().text = "SDK Version : " + getSdkVersion();
     }
