@@ -13,31 +13,49 @@ using UnityEngine.EventSystems;
 [Serializable]
 public class MyInfo
 {
-    public string user_name;
-    public string user_title;
+    public int uid;
+    public string name;
+    public string title;
+    public string cookie;
 }
 
 
 public class MenuController : MonoBehaviour
 {
+    private string SITE_ADDRESS = "http://untact-museum.herokuapp.com/";
+
     public GameObject menu;
     public Button buttonUser;
     public Button buttonExhibit;
+    public Button buttonInvite;
     public Toggle toggleDND;
     public GameObject userWindow;
     public Image userWindowBar;
     public GameObject exhibitWindow;
     public Image exhibitWindowBar;
+    public GameObject inviteWindow;
+    public Image inviteWindowBar;
     public bool menuOn = false;
     public bool userListOn = false;
     public bool exhibitListOn = false;
+    public bool inviteListOn = false;
 
     public MyInfo myInfo;
     public Text textMyID;
     public Text textMyTitle;
 
     public GameObject userListController;
+    public VideoApp videoApp;
+    public GameObject webSocketController;
 
+    public Image invitePanel;
+    public ScrollRect inviteScrollRect;
+    public Scrollbar inviteScrollbar;
+
+    public Image textScrollbarImage;
+    public RectTransform contentTextTransform;
+    private float textViewportHeight = 160f;
+    public GameObject buttonLeave;
 
     void Start()
     {
@@ -47,7 +65,7 @@ public class MenuController : MonoBehaviour
 
     IEnumerator GetInfoRequest()
     {
-        using (UnityWebRequest getInfo = UnityWebRequest.Get("http://localhost:8000/api/myInfo/"))
+        using (UnityWebRequest getInfo = UnityWebRequest.Get(SITE_ADDRESS + "api/myInfo/"))
         {
             yield return getInfo.SendWebRequest();
 
@@ -59,8 +77,15 @@ public class MenuController : MonoBehaviour
             else
             {
                 myInfo = JsonUtility.FromJson<MyInfo>(getInfo.downloadHandler.text);
-                textMyID.text = myInfo.user_name;
-                textMyTitle.text = myInfo.user_title;
+                textMyID.text = myInfo.name;
+                textMyTitle.text = myInfo.title;
+                if (myInfo.title == "")
+                {
+                    textMyTitle.text = "없음";
+                }
+                PlayerPrefs.SetString("Cookie", myInfo.cookie);
+                videoApp.myInfo = myInfo;
+                webSocketController.SetActive(true);
             }
         }
     }
@@ -68,12 +93,13 @@ public class MenuController : MonoBehaviour
     public void Logout()
     {
         menu.SetActive(false);
+        PlayerPrefs.DeleteKey("Cookie");
         StartCoroutine(LogoutRequest());
     }
 
     IEnumerator LogoutRequest()
     {
-        UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
+        UnityWebRequest getToken = UnityWebRequest.Get(SITE_ADDRESS + "api/token/");
         yield return getToken.SendWebRequest();
         if (getToken.isNetworkError || getToken.isHttpError)
         {
@@ -87,7 +113,7 @@ public class MenuController : MonoBehaviour
         MatchCollection cookieMatches = rxCookie.Matches(SetCookie);
         string csrfCookie = cookieMatches[0].Groups["csrf_token"].Value;
 
-        UnityWebRequest doLogout = UnityWebRequest.Post("http://localhost:8000/api/logout/", "");
+        UnityWebRequest doLogout = UnityWebRequest.Post(SITE_ADDRESS + "api/logout/", "");
 
         doLogout.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         doLogout.SetRequestHeader("X-CSRFTOKEN", csrfCookie);
@@ -111,7 +137,7 @@ public class MenuController : MonoBehaviour
 
     IEnumerator dndSwitchRequest(bool dndIsOn)
     {
-        UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
+        UnityWebRequest getToken = UnityWebRequest.Get(SITE_ADDRESS + "api/token/");
         yield return getToken.SendWebRequest();
         if (getToken.isNetworkError || getToken.isHttpError)
         {
@@ -128,7 +154,7 @@ public class MenuController : MonoBehaviour
         WWWForm form = new WWWForm();
         form.AddField("dndswitch", dndIsOn.ToString());
 
-        UnityWebRequest dndSwitch = UnityWebRequest.Post("http://localhost:8000/api/dndSwitch/", form);
+        UnityWebRequest dndSwitch = UnityWebRequest.Post(SITE_ADDRESS + "api/dndSwitch/", form);
 
         dndSwitch.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         dndSwitch.SetRequestHeader("X-CSRFTOKEN", csrfCookie);
@@ -156,6 +182,7 @@ public class MenuController : MonoBehaviour
             userWindowBar.color = new Color(150f / 255, 150f / 255, 150f / 255, 100f / 255);
             userWindow.transform.SetAsLastSibling();
             exhibitWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
+            inviteWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
             cb.normalColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
             cb.selectedColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
             cb.highlightedColor = new Color(180f / 255, 180f / 255, 180f / 255, 1);
@@ -185,6 +212,7 @@ public class MenuController : MonoBehaviour
             exhibitWindowBar.color = new Color(150f / 255, 150f / 255, 150f / 255, 100f / 255);
             exhibitWindow.transform.SetAsLastSibling();
             userWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
+            inviteWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
             cb.normalColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
             cb.selectedColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
             cb.highlightedColor = new Color(180f / 255, 180f / 255, 180f / 255, 1);
@@ -196,6 +224,35 @@ public class MenuController : MonoBehaviour
             cb.selectedColor = Color.white;
             cb.highlightedColor = new Color(220f / 255, 220f / 255, 220f / 255, 1);
             buttonExhibit.colors = cb;
+        }
+
+        EventSystem.current.SetSelectedGameObject(null);
+    }
+
+    public void InviteList()
+    {
+        inviteListOn = !inviteListOn;
+        inviteWindow.SetActive(inviteListOn);
+
+        ColorBlock cb = buttonInvite.colors;
+
+        if (inviteListOn)
+        {
+            inviteWindowBar.color = new Color(150f / 255, 150f / 255, 150f / 255, 100f / 255);
+            inviteWindow.transform.SetAsLastSibling();
+            userWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
+            exhibitWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
+            cb.normalColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
+            cb.selectedColor = new Color(150f / 255, 150f / 255, 150f / 255, 1);
+            cb.highlightedColor = new Color(180f / 255, 180f / 255, 180f / 255, 1);
+            buttonInvite.colors = cb;
+        }
+        else
+        {
+            cb.normalColor = Color.white;
+            cb.selectedColor = Color.white;
+            cb.highlightedColor = new Color(220f / 255, 220f / 255, 220f / 255, 1);
+            buttonInvite.colors = cb;
         }
 
         EventSystem.current.SetSelectedGameObject(null);
@@ -217,6 +274,20 @@ public class MenuController : MonoBehaviour
                 menu.SetActive(true);
                 userWindow.SetActive(userListOn);
                 exhibitWindow.SetActive(exhibitListOn);
+                inviteWindow.SetActive(inviteListOn);
+
+                invitePanel.color = new Color(50f / 255, 50f / 255, 50f / 255, 50f / 255);
+                if (inviteScrollbar.numberOfSteps > 1)
+                {
+                    inviteScrollRect.vertical = true;
+                }
+
+                if (contentTextTransform.sizeDelta.y >= textViewportHeight)
+                {
+                    textScrollbarImage.color = Color.white;
+                }
+                buttonLeave.SetActive(true);
+
                 Cursor.lockState = CursorLockMode.None;
             }
             else
@@ -230,6 +301,15 @@ public class MenuController : MonoBehaviour
                 menu.SetActive(false);
                 userWindow.SetActive(false);
                 exhibitWindow.SetActive(false);
+                inviteWindow.SetActive(false);
+
+                invitePanel.color = new Color(50f / 255, 50f / 255, 50f / 255, 0);
+                inviteScrollbar.value = 1;
+                inviteScrollRect.vertical = false;
+
+                textScrollbarImage.color = Color.clear;
+                buttonLeave.SetActive(false);
+
                 Cursor.lockState = CursorLockMode.Locked;
             }
         }

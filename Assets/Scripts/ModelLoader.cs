@@ -37,6 +37,8 @@ public class ExhibitList
 
 public class ModelLoader : MonoBehaviour
 {
+    private string SITE_ADDRESS = "http://untact-museum.herokuapp.com/";
+
     public GameObject firstPersonController;
     public ExhibitListController exhibitListController;
     public RectTransform progressBar;
@@ -79,7 +81,6 @@ public class ModelLoader : MonoBehaviour
             firstPersonController.GetComponent<Jump>().enabled = true;
             firstPersonController.GetComponent<Crouch>().enabled = true;
             firstPersonController.GetComponent<MenuController>().enabled = true;
-            firstPersonController.GetComponent<APIBlankSender>().enabled = true;
             firstPersonController.GetComponentInChildren<FirstPersonLook>().enabled = true;
             firstPersonController.GetComponentInChildren<Zoom>().enabled = true;
             firstPersonController.GetComponentInChildren<CollisionDetector>().enabled = true;
@@ -109,14 +110,14 @@ public class ModelLoader : MonoBehaviour
     string GetFilePath(string url)
     {
         string[] pieces = url.Split('/');
-        string filename = pieces[pieces.Length - 1];
+        string filename = pieces[pieces.Length - 1].Split('?')[0];
 
         return $"{filePath}{filename}";
     }
 
     IEnumerator GetModelRequest(Exhibit exhibit)
     {
-        string url = "http://localhost:8000/media/" + exhibit.mesh;
+        string url = exhibit.mesh;
         while (true)
         {
             UnityWebRequest req = UnityWebRequest.Get(url);
@@ -135,7 +136,7 @@ public class ModelLoader : MonoBehaviour
             }
             else
             {
-                log.text = $"Downloaded file : {url}";
+                log.text = $"Downloaded file : {url.Split('?')[0]}";
                 LoadModel(exhibit);
                 break;
             }
@@ -147,7 +148,7 @@ public class ModelLoader : MonoBehaviour
     {
         while (true)
         {
-            UnityWebRequest req = UnityWebRequest.Get("http://localhost:8000/api/exhibit/");
+            UnityWebRequest req = UnityWebRequest.Get(SITE_ADDRESS + "api/exhibit/");
             yield return req.SendWebRequest();
 
             if (req.isNetworkError || req.isHttpError)

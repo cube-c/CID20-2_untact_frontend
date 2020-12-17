@@ -10,6 +10,8 @@ using UnityEngine.UI;
 
 public class LoginController : MonoBehaviour
 {
+    private string SITE_ADDRESS = "http://untact-museum.herokuapp.com/";
+
     public enum State { Login, Signup, SignupComplete };
 
     public InputField loginUsername;
@@ -51,11 +53,11 @@ public class LoginController : MonoBehaviour
 
     public void Quit()
     {
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
-        #else
+#else
         Application.Quit();
-        #endif
+#endif
     }
 
     public void ChangeState(State state)
@@ -114,7 +116,7 @@ public class LoginController : MonoBehaviour
         form.AddField("username", currentUsername);
         form.AddField("password", currentPassword);
 
-        UnityWebRequest doLogin = UnityWebRequest.Post("http://localhost:8000/api/login/", form);
+        UnityWebRequest doLogin = UnityWebRequest.Post(SITE_ADDRESS + "api/login/", form);
 
         doLogin.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         doLogin.SetRequestHeader("X-CSRFTOKEN", csrfCookie);
@@ -168,7 +170,7 @@ public class LoginController : MonoBehaviour
         form.AddField("username", currentUsername);
         form.AddField("password", currentPassword);
 
-        UnityWebRequest doSignup = UnityWebRequest.Post("http://localhost:8000/api/signup/", form);
+        UnityWebRequest doSignup = UnityWebRequest.Post(SITE_ADDRESS + "api/signup/", form);
 
         doSignup.SetRequestHeader("Content-Type", "application/x-www-form-urlencoded");
         doSignup.SetRequestHeader("X-CSRFTOKEN", csrfCookie);
@@ -186,7 +188,7 @@ public class LoginController : MonoBehaviour
 
     IEnumerator TokenRequest()
     {
-        UnityWebRequest getToken = UnityWebRequest.Get("http://localhost:8000/api/token/");
+        UnityWebRequest getToken = UnityWebRequest.Get(SITE_ADDRESS + "api/token/");
         yield return getToken.SendWebRequest();
         if (getToken.isNetworkError || getToken.isHttpError)
         {

@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 public class DragWindow : MonoBehaviour, IDragHandler, IPointerDownHandler
 {
     public RectTransform windowPanelTransform;
-    public Image otherWindowBar;
+    public Image[] otherWindowBars;
 
     public void OnDrag(PointerEventData eventData)
     {
@@ -19,6 +19,9 @@ public class DragWindow : MonoBehaviour, IDragHandler, IPointerDownHandler
     {
         GetComponent<Image>().color = new Color(150f / 255, 150f / 255, 150f / 255, 100f / 255);
         windowPanelTransform.SetAsLastSibling();
-        otherWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
+        foreach (Image otherWindowBar in otherWindowBars)
+        {
+            otherWindowBar.color = new Color(200f / 255, 200f / 255, 200f / 255, 100f / 255);
+        }
     }
 }

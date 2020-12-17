@@ -145,8 +145,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_FontData:
-    m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 18
+    m_Font: {fileID: 12800000, guid: 8a2b9e2a607dd2143b58c44bc32410b4, type: 3}
+    m_FontSize: 13
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
@@ -157,7 +157,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: 
+  m_Text: "\uCD08\uB300\n\uCDE8\uC18C"
 --- !u!1 &4064290483296191265
 GameObject:
   m_ObjectHideFlags: 0
@@ -321,7 +321,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4064290483672431007}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
@@ -357,9 +357,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2721644447951363177}
-        m_TargetAssemblyTypeName: UserRow, Assembly-CSharp
-        m_MethodName: Invite
+      - m_Target: {fileID: 606379015958830294}
+        m_TargetAssemblyTypeName: SentInviteRow, Assembly-CSharp
+        m_MethodName: Cancel
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -380,9 +380,9 @@ GameObject:
   - component: {fileID: 4064290483944040426}
   - component: {fileID: 4064290483944040424}
   - component: {fileID: 4064290483944040425}
-  - component: {fileID: 2721644447951363177}
+  - component: {fileID: 606379015958830294}
   m_Layer: 5
-  m_Name: UserRow
+  m_Name: SentInviteRow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -448,7 +448,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &2721644447951363177
+--- !u!114 &606379015958830294
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -457,16 +457,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 4064290483944040427}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 444147a881f7ad74684faeb69d99f29b, type: 3}
+  m_Script: {fileID: 11500000, guid: d890744a3f5e01544b8bf47787c27edf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   userID: 
   userTitle: 
   userIDText: {fileID: 4064290483296191271}
   userTitleText: {fileID: 4064290482945723755}
-  buttonImage: {fileID: 4064290483672431004}
-  button: {fileID: 4064290483672431005}
-  buttonText: {fileID: 4064290483082591559}
   webSocketController: {fileID: 0}
 --- !u!1 &4064290483966268038
 GameObject:

@@ -17,7 +17,7 @@ public class ExhibitListController : MonoBehaviour
 {
     public GameObject content;
     public Scrollbar scrollbar;
-    public Image handleImage;
+    public ScrollRect scrollRect;
 
     public GameObject exhibitRowPrefab;
 
@@ -175,11 +175,11 @@ public class ExhibitListController : MonoBehaviour
         scrollbar.numberOfSteps = exhibitRowsShow.Count + 2 - numberOfRowsInWindow;
         if (scrollbar.numberOfSteps <= 1)
         {
-            handleImage.color = new Color(1, 1, 1, 0);
+            scrollRect.vertical = false;
         }
         else
         {
-            handleImage.color = new Color(1, 1, 1, 200f / 255);
+            scrollRect.vertical = true;
         }
 
         float posy = 0;
