@@ -1,18 +1,24 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class TextController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public TextMeshProUGUI messageText;
+    public Scrollbar textScrollbar;
 
-    // Update is called once per frame
-    void Update()
+    public void print(string text)
     {
-        
+        List<string> messageTextList = messageText.text.Split('\n').ToList<string>();
+        messageTextList.Add(text);
+        if (messageTextList.Count > 50)
+        {
+            messageTextList.RemoveAt(0);
+        }
+        messageText.text = string.Join("\n", messageTextList.ToArray());
+        textScrollbar.value = 0;
     }
 }
