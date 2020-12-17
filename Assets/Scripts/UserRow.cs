@@ -51,6 +51,9 @@ public class UserRow : MonoBehaviour
 
     public void Invite()
     {
-        webSocketController.Invite(userID);
+        GameObject go = GameObject.Find("VideoApp");
+        if (go.GetComponent<VideoApp>().userVideoList.Count < 6)
+            webSocketController.Invite(userID);
+        else Debug.Log("Invite Cancelled : Full Room");
     }
 }
