@@ -51,7 +51,7 @@ public class WebSocketController : MonoBehaviour
         {
             // Reading a plain text message
             var message = System.Text.Encoding.UTF8.GetString(bytes);
-            //Debug.Log(message);
+            Debug.Log(message);
 
             switch (OnMessageType(message))
             {

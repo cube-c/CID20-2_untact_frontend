@@ -57,15 +57,9 @@ public class VideoApp : MonoBehaviour
 
     private void activeMyVideo(bool activeVideo)
     {
-        if (engine != null)
-        {
-            if (myVideoIsOn != activeVideo)
-            {
-                myVideoIsOn = activeVideo;
-                myVideoSurface.SetEnable(activeVideo);
-                myVideo.SetActive(activeVideo);
-            }
-        }
+        myVideoIsOn = activeVideo;
+        myVideoSurface.SetEnable(activeVideo);
+        myVideo.SetActive(activeVideo);
     }
 
     public void unloadEngine()
@@ -81,6 +75,8 @@ public class VideoApp : MonoBehaviour
 
     public void join(string channelId)
     {
+        Debug.Log("calling join");
+
         if (engine == null) return;
 
         engine.OnJoinChannelSuccess = onJoinChannelSuccess;
@@ -90,6 +86,7 @@ public class VideoApp : MonoBehaviour
         engine.EnableVideo();
         engine.EnableVideoObserver();
         engine.JoinChannel(channelId, null, (uint)myInfo.uid);
+        activeMyVideo(true);
     }
 
     public void leave()
@@ -176,14 +173,6 @@ public class VideoApp : MonoBehaviour
 
     public void refreshUserVideo()
     {
-        if (userVideoList.Count > 0)
-        {
-            activeMyVideo(true);
-        }
-        else
-        {
-            activeMyVideo(false);
-        }
         foreach (GameObject userVideoObject in userVideoList)
         {
             int posx = (userVideoList.IndexOf(userVideoObject) / 3) * (-userVideoPanelWidth);
@@ -192,5 +181,4 @@ public class VideoApp : MonoBehaviour
             userVideoObject.GetComponent<RectTransform>().localPosition = new Vector3(posx, posy, 0);
         }
     }
-
 }
