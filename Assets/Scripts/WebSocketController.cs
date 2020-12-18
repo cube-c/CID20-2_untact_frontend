@@ -97,16 +97,24 @@ public class WebSocketController : MonoBehaviour
                     Info infoInviteSuccess = JsonUtility.FromJson<Info>(message); // username who you invited
                     textController.print(infoInviteSuccess.info + " 님을 초대했습니다.");
                     break;
-                case "invite_same_channel_fail":
-                    Info infoInviteSameChannelFail = JsonUtility.FromJson<Info>(message); // username who you invited
-                    textController.print(infoInviteSameChannelFail.info + " 님과 이미 같은 대화방에 있습니다.");
+                case "invite_fail":
+                    Info infoInviteFail = JsonUtility.FromJson<Info>(message);
+                    if (infoInviteFail.info == "invite_same_channel_fail")
+                    {
+                        textController.print("초대한 대상이 이미 같은 대화방에 있습니다.");
+                    }
+                    else if (infoInviteFail.info == "invite_dnd_fail")
+                    {
+                        textController.print("초대한 대상이 초대거부 상태입니다.");
+                    }
+                    
                     break;
                 case "accept_success":
                     Info infoAcceptSuccess = JsonUtility.FromJson<Info>(message); // username who you invited
                     textController.print(infoAcceptSuccess.info + " 님의 초대를 수락했습니다.");
                     break;
                 case "accept_fail":
-                    Info infoAcceptFail = JsonUtility.FromJson<Info>(message); // username who you invited
+                    Info infoAcceptFail = JsonUtility.FromJson<Info>(message);
                     if (infoAcceptFail.info == "already_in_channel")
                     {
                         textController.print("초대를 수락하려면 대화방에서 나가야합니다.");
