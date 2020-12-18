@@ -7236,6 +7236,7 @@ MonoBehaviour:
   inviteListController: {fileID: 1538094272}
   videoController: {fileID: 547490644}
   textController: {fileID: 1339720505}
+  videoApp: {fileID: 224713371}
 --- !u!1 &1286323246
 GameObject:
   m_ObjectHideFlags: 0
