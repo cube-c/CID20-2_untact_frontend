@@ -42,6 +42,17 @@ public class WebSocketController : MonoBehaviour
     public VideoController videoController;
     public TextController textController;
     public VideoApp videoApp;
+    public GameObject canvasDisconnect;
+
+    private IEnumerator WaitForSceneLoad()
+    {
+        canvasDisconnect.SetActive(true);
+        yield return new WaitForSeconds(3);
+        PlayerPrefs.DeleteKey("Cookie");
+        videoApp.unloadEngine();
+        Cursor.lockState = CursorLockMode.None;
+        SceneManager.LoadScene("LoginScene");
+    }
 
     async void Start()
     {
@@ -62,10 +73,7 @@ public class WebSocketController : MonoBehaviour
         websocket.OnClose += (e) =>
         {
             Debug.Log("WebSocket Connection close");
-            PlayerPrefs.DeleteKey("Cookie");
-            videoApp.unloadEngine();
-            Cursor.lockState = CursorLockMode.None;
-            SceneManager.LoadScene("LoginScene");
+            StartCoroutine(WaitForSceneLoad());
         };
 
         websocket.OnMessage += (bytes) =>
