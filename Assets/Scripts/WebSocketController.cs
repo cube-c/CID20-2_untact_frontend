@@ -62,17 +62,17 @@ public class WebSocketController : MonoBehaviour
 
         websocket.OnOpen += () =>
         {
-            Debug.Log("WebSocket Connection open");
+            //Debug.Log("WebSocket Connection open");
         };
 
         websocket.OnError += (e) =>
         {
-            Debug.Log("WebSocket Connection error");
+            //Debug.Log("WebSocket Connection error");
         };
 
         websocket.OnClose += (e) =>
         {
-            Debug.Log("WebSocket Connection close");
+            //Debug.Log("WebSocket Connection close");
             StartCoroutine(WaitForSceneLoad());
         };
 

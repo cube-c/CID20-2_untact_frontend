@@ -3952,7 +3952,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: "\uC5F0\uACB0\uC774 \uD574\uC81C\uB418\uC5C8\uC2B5\uB2C8\uB2E4."
+  m_Text: "\uC11C\uBC84\uC640\uC758 \uC5F0\uACB0\uC774 \uB04A\uACBC\uC2B5\uB2C8\uB2E4."
 --- !u!222 &710542634
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -7415,6 +7415,7 @@ MonoBehaviour:
   videoController: {fileID: 547490644}
   textController: {fileID: 1339720505}
   videoApp: {fileID: 224713371}
+  canvasDisconnect: {fileID: 0}
 --- !u!1 &1286323246
 GameObject:
   m_ObjectHideFlags: 0
