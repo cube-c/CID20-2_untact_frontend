@@ -314,4 +314,12 @@ public class MenuController : MonoBehaviour
             }
         }
     }
+
+    public void RefreshTextScrollBar()
+    {
+        if (menuOn && contentTextTransform.sizeDelta.y >= textViewportHeight)
+        {
+            textScrollbarImage.color = Color.white;
+        }
+    }
 }
