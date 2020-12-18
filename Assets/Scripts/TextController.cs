@@ -20,7 +20,19 @@ public class TextController : MonoBehaviour
             messageTextList.RemoveAt(0);
         }
         messageText.text = string.Join("\n", messageTextList.ToArray());
+        RefreshTextScrollBar();
+        MoveScrollbarToBottom();
+        Invoke("RefreshTextScrollBar", 0.1f);
+        Invoke("MoveScrollbarToBottom", 0.1f);
+    }
+
+    public void RefreshTextScrollBar()
+    {
         menuController.RefreshTextScrollBar();
+    }
+
+    public void MoveScrollbarToBottom()
+    {
         textScrollbar.value = 0;
     }
 }

@@ -269,7 +269,6 @@ public class MenuController : MonoBehaviour
                 gameObject.GetComponent<Jump>().enabled = false;
                 gameObject.GetComponent<Crouch>().enabled = false;
                 gameObject.GetComponentInChildren<FirstPersonLook>().enabled = false;
-                gameObject.GetComponentInChildren<Zoom>().enabled = false;
                 gameObject.GetComponentInChildren<CollisionDetector>().enabled = false;
                 menu.SetActive(true);
                 userWindow.SetActive(userListOn);
@@ -296,7 +295,6 @@ public class MenuController : MonoBehaviour
                 gameObject.GetComponent<Jump>().enabled = true;
                 gameObject.GetComponent<Crouch>().enabled = true;
                 gameObject.GetComponentInChildren<FirstPersonLook>().enabled = true;
-                gameObject.GetComponentInChildren<Zoom>().enabled = true;
                 gameObject.GetComponentInChildren<CollisionDetector>().enabled = true;
                 menu.SetActive(false);
                 userWindow.SetActive(false);

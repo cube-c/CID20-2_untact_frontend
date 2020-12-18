@@ -31,6 +31,11 @@ public class LoginController : MonoBehaviour
     private string csrfCookie;
     private State currentState;
 
+    void Awake()
+    {
+        Screen.SetResolution(1920, 1080, true);
+    }
+
     void Start()
     {
         ChangeState(State.Login);
