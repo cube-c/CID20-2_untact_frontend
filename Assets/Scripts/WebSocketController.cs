@@ -114,7 +114,7 @@ public class WebSocketController : MonoBehaviour
                     textController.print("존재하지 않는 초대 건입니다.");
                     break;
                 case "cancel_success":
-                    textController.print("초대를 취소했습니다.");
+                    // call textController.print() in case "message"
                     break;
                 case "cancel_fail":
                     textController.print("존재하지 않는 초대 건입니다.");
@@ -163,7 +163,7 @@ public class WebSocketController : MonoBehaviour
                     }
                     else if (msg.message == "canceled")
                     {
-                        textController.print(msg.user_name + " 님이 당신에게 보낸 초대를 취소했습니다.");
+                        textController.print(msg.user_name + " 님에게 보낸 초대를 취소했습니다.");
                     }
                     break;
                 default:
