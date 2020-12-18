@@ -94,6 +94,7 @@ public class MenuController : MonoBehaviour
     {
         menu.SetActive(false);
         PlayerPrefs.DeleteKey("Cookie");
+        videoApp.unloadEngine();
         StartCoroutine(LogoutRequest());
     }
 
