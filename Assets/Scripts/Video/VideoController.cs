@@ -19,7 +19,6 @@ public class VideoController : MonoBehaviour
         if (string.IsNullOrEmpty(channelId)) // leave
         {
             app.leave();
-            // don't unload engine
         }
         else // join
         {

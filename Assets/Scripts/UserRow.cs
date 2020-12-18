@@ -51,9 +51,15 @@ public class UserRow : MonoBehaviour
 
     public void Invite()
     {
-        GameObject go = GameObject.Find("VideoApp");
-        if (go.GetComponent<VideoApp>().userVideoList.Count < 6)
+        GameObject videoAppObject = GameObject.Find("VideoApp");
+        if (videoAppObject.GetComponent<VideoApp>().userVideoList.Count < 6)
+        {
             webSocketController.Invite(userID);
-        else Debug.Log("Invite Cancelled : Full Room");
+        }
+        else
+        {
+            GameObject textController = GameObject.Find("TextController");
+            textController.GetComponent<TextController>().print("대화방 정원은 7명이 최대입니다.");
+        }
     }
 }

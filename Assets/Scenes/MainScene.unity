@@ -1758,6 +1758,7 @@ MonoBehaviour:
   myVideo: {fileID: 327482826}
   myVideoSurface: {fileID: 1321569149}
   videoPanelTransform: {fileID: 1293225688}
+  textController: {fileID: 1339720505}
 --- !u!1 &227390162
 GameObject:
   m_ObjectHideFlags: 0
@@ -7251,6 +7252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inviteListController: {fileID: 1538094272}
   videoController: {fileID: 547490644}
+  textController: {fileID: 1339720505}
 --- !u!1 &1286323246
 GameObject:
   m_ObjectHideFlags: 0
