@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using NativeWebSocket;
 
 
@@ -40,6 +41,7 @@ public class WebSocketController : MonoBehaviour
     public InviteListController inviteListController;
     public VideoController videoController;
     public TextController textController;
+    public VideoApp videoApp;
 
     async void Start()
     {
@@ -49,17 +51,21 @@ public class WebSocketController : MonoBehaviour
 
         websocket.OnOpen += () =>
         {
-            //Debug.Log("WebSocket Connection open");
+            Debug.Log("WebSocket Connection open");
         };
 
         websocket.OnError += (e) =>
         {
-            //Debug.Log("Error - " + e);
+            Debug.Log("WebSocket Connection error");
         };
 
         websocket.OnClose += (e) =>
         {
-            //Debug.Log("WebSocket Connection closed");
+            Debug.Log("WebSocket Connection close");
+            PlayerPrefs.DeleteKey("Cookie");
+            videoApp.unloadEngine();
+            Cursor.lockState = CursorLockMode.None;
+            SceneManager.LoadScene("LoginScene");
         };
 
         websocket.OnMessage += (bytes) =>
