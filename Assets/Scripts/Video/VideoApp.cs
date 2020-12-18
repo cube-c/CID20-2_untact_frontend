@@ -31,12 +31,10 @@ public class VideoApp : MonoBehaviour
     public VideoSurface myVideoSurface;
     public Transform videoPanelTransform;
 
-    private bool myVideoIsOn = false;
+    public TextController textController;
 
     public void loadEngine(string appId)
     {
-        Debug.Log("calling loadEngine");
-
         if (engine != null)
         {
             Debug.Log("Engine exists. Please unload it first!");
@@ -57,15 +55,12 @@ public class VideoApp : MonoBehaviour
 
     private void activeMyVideo(bool activeVideo)
     {
-        myVideoIsOn = activeVideo;
         myVideoSurface.SetEnable(activeVideo);
         myVideo.SetActive(activeVideo);
     }
 
     public void unloadEngine()
     {
-        Debug.Log("calling unloadEngine");
-
         if (engine != null)
         {
             IRtcEngine.Destroy();
@@ -75,8 +70,6 @@ public class VideoApp : MonoBehaviour
 
     public void join(string channelId)
     {
-        Debug.Log("calling join");
-
         if (engine == null) return;
 
         engine.OnJoinChannelSuccess = onJoinChannelSuccess;
@@ -91,8 +84,6 @@ public class VideoApp : MonoBehaviour
 
     public void leave()
     {
-        Debug.Log("calling leave");
-
         if (engine == null) return;
 
         foreach (GameObject userVideoObject in userVideoList)
@@ -103,6 +94,7 @@ public class VideoApp : MonoBehaviour
         engine.LeaveChannel();
         engine.DisableVideoObserver();
         activeMyVideo(false);
+        textController.print("대화방에서 나갔습니다.");
     }
 
     public void EnableVideo(bool pauseVideo)
@@ -122,7 +114,7 @@ public class VideoApp : MonoBehaviour
 
     private void onJoinChannelSuccess(string channelName, uint uid, int elapsed)
     {
-        // print join success
+        textController.print("대화방에 입장했습니다.");
     }
 
     private void onUserJoined(uint uid, int elapsed)
@@ -132,8 +124,8 @@ public class VideoApp : MonoBehaviour
 
     private void onUserOffline(uint uid, USER_OFFLINE_REASON reason)
     {
-        // print user leaved
         GameObject offlineUserVideoObject = userVideoList.Where(userVideo => userVideo.GetComponent<UserVideo>().uid == uid).SingleOrDefault();
+        textController.print(offlineUserVideoObject.GetComponent<UserVideo>().username + " 님이 대화방에서 나갔습니다.");
         userVideoList.Remove(offlineUserVideoObject);
         Destroy(offlineUserVideoObject);
         refreshUserVideo();
@@ -158,6 +150,7 @@ public class VideoApp : MonoBehaviour
                 userVideoComponent.username = userVideoData.name;
                 userVideoComponent.title = userVideoData.title;
                 userVideoComponent.FillText();
+                textController.print(userVideoData.name + " 님이 대화방에 입장했습니다.");
 
                 VideoSurface userVideoSurface = userVideoObject.transform.Find("VideoScreen").gameObject.AddComponent<VideoSurface>();
                 userVideoSurface.SetForUser(uid);

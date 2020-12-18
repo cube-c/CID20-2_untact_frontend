@@ -294,7 +294,7 @@ GameObject:
   - component: {fileID: 36837562}
   - component: {fileID: 36837564}
   m_Layer: 5
-  m_Name: ContentText
+  m_Name: MessageText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -339,16 +339,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "user1 \uB2D8\uC774 \uB2F9\uC2E0\uC744 \uD654\uC0C1 \uB300\uD654\uC5D0
-    \uCD08\uB300\uD588\uC2B5\uB2C8\uB2E4.\nuser1 \uB2D8\uC774 \uB2F9\uC2E0\uC744
-    \uD654\uC0C1 \uB300\uD654\uC5D0 \uCD08\uB300\uD588\uC2B5\uB2C8\uB2E4.\nuser1
-    \uB2D8\uAED8\uC11C \uB2F9\uC2E0\uC744 \uD654\uC0C1 \uB300\uD654\uC5D0 \uCD08\uB300\uB97C
-    \uD588\uC5C8\uC2B5\uB2C8\uB2E4.\nuser1 \uB2D8\uC774 \uB2F9\uC2E0\uC744 \uD654\uC0C1
-    \uB300\uD654\uC5D0 \uCD08\uB300\uD588\uC2B5\uB2C8\uB2E4.\nuser1 \uB2D8\uC774
-    \uB2F9\uC2E0\uC744 \uD654\uC0C1 \uB300\uD654\uC5D0 \uCD08\uB300\uD588\uC2B5\uB2C8\uB2E4.\n\nuser1
-    \uB2D8\uC774 \uB2F9\uC2E0\uC744 \uD654\uC0C1 \uB300\uD654\uC5D0 \uCD08\uB300\uD588\uC2B5\uB2C8\uB2E4.\n\nuser1
-    \uB2D8\uC774 \uB2F9\uC2E0\uC744 \uD654\uC0C1 \uB300\uD654\uC5D0 \uCD08\uB300\uD588\uC2B5\uB2C8\uB2E4.\nuser1
-    \uB2D8\uC774 \uB2F9\uC2E0\uC744 \uD654\uC0C1 \uB300\uD654\uC5D0 \uCD08\uB300\uD588\uC2B5\uB2C8\uB2E4.\n\nuser1\n"
+  m_text: "Welcome to Untact Museum\n\uD658\uC601\uD569\uB2C8\uB2E4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 36484501031bf2d4894eea0ea3f32755, type: 2}
   m_sharedMaterial: {fileID: -595291126676802658, guid: 36484501031bf2d4894eea0ea3f32755, type: 2}
@@ -387,7 +378,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
-  m_lineSpacing: 4
+  m_lineSpacing: 9
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
@@ -1767,6 +1758,7 @@ MonoBehaviour:
   myVideo: {fileID: 327482826}
   myVideoSurface: {fileID: 1321569149}
   videoPanelTransform: {fileID: 1293225688}
+  textController: {fileID: 1339720505}
 --- !u!1 &227390162
 GameObject:
   m_ObjectHideFlags: 0
@@ -5106,7 +5098,6 @@ GameObject:
   - component: {fileID: 963194230}
   - component: {fileID: 963194229}
   - component: {fileID: 963194232}
-  - component: {fileID: 963194231}
   - component: {fileID: 963194233}
   m_Layer: 8
   m_Name: Main Camera
@@ -5258,22 +5249,6 @@ MonoBehaviour:
   m_BeforeTransparentBundles: []
   m_BeforeStackBundles: []
   m_AfterStackBundles: []
---- !u!114 &963194231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 780f90e951d635f439326ea715cd97e9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensitivity: 1
-  defaultFOV: 0
-  maxZoom: 15
-  zoomAmount: 0
 --- !u!114 &963194232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7260,6 +7235,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   inviteListController: {fileID: 1538094272}
   videoController: {fileID: 547490644}
+  textController: {fileID: 1339720505}
 --- !u!1 &1286323246
 GameObject:
   m_ObjectHideFlags: 0
@@ -7791,6 +7767,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43c519a0ffbf5db43b9026eaa6205b78, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  messageText: {fileID: 36837562}
+  textScrollbar: {fileID: 1938937784}
+  menuController: {fileID: 1773623225661365}
 --- !u!1 &1357496195
 GameObject:
   m_ObjectHideFlags: 0
@@ -11647,8 +11626,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1894690815}
   m_HandleRect: {fileID: 1894690814}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 0.5215804
+  m_Value: 0
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13049,7 +13028,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1773623225661364}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 963194228}
@@ -13085,7 +13064,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &114497868094198736
 MonoBehaviour:
