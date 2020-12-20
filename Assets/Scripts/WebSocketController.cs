@@ -250,6 +250,11 @@ public class WebSocketController : MonoBehaviour
         }
     }
 
+    async public void Close()
+    {
+        await websocket.Close();
+    }
+
     private async void OnApplicationQuit()
     {
         await websocket.Close();

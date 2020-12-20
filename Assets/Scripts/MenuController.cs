@@ -95,6 +95,7 @@ public class MenuController : MonoBehaviour
         menu.SetActive(false);
         PlayerPrefs.DeleteKey("Cookie");
         videoApp.unloadEngine();
+        webSocketController.GetComponent<WebSocketController>().Close();
         StartCoroutine(LogoutRequest());
     }
 
