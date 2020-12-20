@@ -7415,7 +7415,7 @@ MonoBehaviour:
   videoController: {fileID: 547490644}
   textController: {fileID: 1339720505}
   videoApp: {fileID: 224713371}
-  canvasDisconnect: {fileID: 0}
+  canvasDisconnect: {fileID: 132811900}
 --- !u!1 &1286323246
 GameObject:
   m_ObjectHideFlags: 0
